@@ -1,0 +1,48 @@
+<?php
+
+namespace {{ namespace }};
+
+{{ factoryImport }}
+use Illuminate\Database\Eloquent\Model;
+
+class {{ class }} extends Model
+{
+    // CRUD
+    public static function create(Request $request){
+
+    }
+
+    public static function edit(int $id){
+        
+    }
+
+    public static function get(int $id){
+        return response()->json({{ class }}::first($id));
+    }
+
+    public static function update(int $id, json $cart){
+
+    }
+
+    public static function delete(int ${{ class }}){
+        // Find the post by ID and delete it
+        ${{ class }} = {{ class }}::find(${{ class }}); // Assuming the ID of the post to delete is 1
+
+        if (${{ class }}) {
+            ${{ class }}->delete();
+            return response()->json(['message' => "{{ class }} item successfully deleted."]);
+        } else {
+            return response()->json(['message' => "{{ class }} item not found."]);
+        }
+    }
+
+    //get all {{ class }} items
+    public static function all(){
+        return response()->json({{ class }}::all());
+    }
+
+    // get {{ class }} by user ID
+    public function userCart(int $userId){
+        return response()->json({{ class }}::where('user_id', $userId)->get());
+    }
+}
