@@ -18,21 +18,6 @@ class Order extends Model
         'user_id', 'total_price', 'status_id', 'stripe_payment_intent_id'
     ];
 
-    public static function updateCart(int $id, $data){
-        $order = Order::find($id);
-
-        if ($order) {
-            $order->update($data);
-
-            return response()->json([
-                'message' => 'Order updated successfully.',
-                'order' => $order
-            ]);
-        }
-
-        return response()->json(['message' => 'Order not found.'], 404);
-    }
-
     public static function orderByUser(int $userId){
         $user = User::find($userId);
     

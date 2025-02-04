@@ -16,28 +16,4 @@ class Admin extends Model
         'name', 'email', 'password', 'role_id', 'permissions'
     ];
 
-    public static function store(Validator $validator){
-        $admin = Admin::create([
-            'name' => $validator->name,
-            'email' => $validator->email,
-            'password' => Hash::make($validator->password),
-            'role' => $validator->role,
-            'permissions' => $validator->permissions,
-        ]);
-
-        return $admin;
-    }
-
-    public static function updateAdmin(int $id, Request $request){
-        $admin->update([
-            'name' => $request->name ?? $admin->name,
-            'email' => $request->email ?? $admin->email,
-            'password' => $request->password ? bcrypt($request->password) : $admin->password,
-            'role' => $request->role ?? $admin->role,
-            'permissions' => $request->permissions ?? $admin->permissions,
-        ]);
-
-        return $admin;
-    }
-
 }

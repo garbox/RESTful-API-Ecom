@@ -14,28 +14,7 @@ class Cart extends Model
 
     protected $fillable = [
         'product_id', 'session_id', 'quantity', 'user_id'
-    ];  
-
-    public static function updateCart(int $cartId, Request $request){
-        $request->validate([
-            'quantity' => 'required|integer|min:1'
-        ]);
-
-        $cartItem = Cart::find($cartId);
-
-        if($cartItem->isEmpty()){
-            return response()->json(['message' => 'Cart item not found.'], 404);
-        }
-        else{
-            $cartItem->quantity = $request->quantity;
-            $cartItem->save();
-
-            return response()->json([
-                'message' => 'Cart item successfully updated.',
-                'cart_item' => $cartItem
-            ], 201);
-        }       
-    }
+    ];
 
     public static function userCart(int $userId){
         $user = User::with('carts.product')->find($userId);

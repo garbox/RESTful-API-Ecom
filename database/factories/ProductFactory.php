@@ -23,8 +23,8 @@ class ProductFactory extends Factory
             'price' => $this->faker->randomFloat(0, 500, 50000), 
             'product_type_id' => ProductType::inRandomOrder()->first()->id,
             'long_description' => $this->faker->paragraph(), 
-            'featured' => $this->faker->boolean(),  // Use boolean() for true/false values
-            'available' => $this->faker->boolean(), // Use boolean() for true/false values
+            'featured' => 1,
+            'available' => 1,
         ];
     }
 }
