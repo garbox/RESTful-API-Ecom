@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Http\Resources\UserResource;
-
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\Models\User;
 
@@ -24,9 +24,11 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8',
         ]);
-    
+
+        $validatedData['password'] = Hash::make($validatedData['password']);
+
         $user = User::create($validatedData);
-    
+
         return response()->json($user, 201);
     }
 
