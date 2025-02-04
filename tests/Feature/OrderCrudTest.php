@@ -63,12 +63,13 @@ class OrderCrudTest extends TestCase
         ];
 
         $response = $this->putJson('/api/order/' . $order->id, $updatedData);
-
         $response->assertStatus(200);
-
         $this->assertDatabaseHas('orders', [
             'total_price' => $updatedData['total_price'],
         ]);
+
+        $response = $this->putJson('/api/order/' . $order->id+1, $updatedData);
+        $response->assertStatus(404);
     }
 
     /** @test */
@@ -78,16 +79,14 @@ class OrderCrudTest extends TestCase
         Product::factory()->create();
         $order = Order::factory()->create();
 
-        // Delete the user using DELETE request
         $response = $this->deleteJson('/api/order/' . $order->id);
-
-        // Assert the response is successful
-        $response->assertStatus(200); // 200 OK
-
-        // Assert the user was deleted from the database
+        $response->assertStatus(200);
         $this->assertDatabaseMissing('orders', [
             'id' => $order->id,
         ]);
+
+        $response = $this->deleteJson('/api/order/'. $order->id+1);
+        $response->assertStatus(404);
     }
 
     /** @test */
@@ -97,9 +96,11 @@ class OrderCrudTest extends TestCase
         Product::factory()->create();
         $order = Order::factory()->create();
         Shipping::factory()->create();
-
+        
         $response = $this->getJson('/api/order/user/'. $user->id);
-
         $response->assertStatus(200);
+
+        $response = $this->getJson('/api/order/user/'. $user->id+1);
+        $response->assertStatus(404);
     }
 }

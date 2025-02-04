@@ -46,15 +46,15 @@ class ShippingCrudTest extends TestCase
         Order::factory()->create();
         $shipping = Shipping::factory()->create();
 
-        // Fetch the user using GET request
         $response = $this->getJson('/api/shipping/' . $shipping->id);
-
-        // Assert the response is successful
-        $response->assertStatus(200); // 200 OK
+        $response->assertStatus(200); 
         $response->assertJson([
             'id' => $shipping->id,
             'email' => $shipping->email,
         ]);
+
+        $response = $this->getJson('/api/shipping/' . $shipping->id+1);
+        $response->assertStatus(404); 
     }
 
     /** @test */
@@ -74,13 +74,14 @@ class ShippingCrudTest extends TestCase
         ];
 
         $response = $this->putJson('/api/shipping/' . $shipping->id, $updatedData);
-
         $response->assertStatus(200); 
-
         $this->assertDatabaseHas('shippings', [
             'name' => $updatedData['name'],
             'email' => $updatedData['email'],
         ]);
+
+        $response = $this->putJson('/api/shipping/' . $shipping->id+1, $updatedData);
+        $response->assertStatus(404); 
     }
 
     /** @test */
@@ -90,11 +91,12 @@ class ShippingCrudTest extends TestCase
         $shipping = Shipping::factory()->create();
 
         $response = $this->deleteJson('/api/shipping/' . $shipping->id);
-
         $response->assertStatus(200);
-
         $this->assertDatabaseMissing('shippings', [
             'id' => $shipping->id,
         ]);
+
+        $response = $this->deleteJson('/api/shipping/' . $shipping->id+1);
+        $response->assertStatus(404);
     }
 }

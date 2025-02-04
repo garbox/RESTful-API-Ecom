@@ -37,42 +37,40 @@ class UserCrudTest extends TestCase
 
     /** @test */
     public function it_can_read_a_user(){
-        // Create a user in the database
         $user = User::factory()->create();
 
         // Fetch the user using GET request
         $response = $this->getJson('/api/user/' . $user->id);
 
-        // Assert the response is successful
-        $response->assertStatus(200); // 200 OK
+        $response->assertStatus(200); 
         $response->assertJson([
             'id' => $user->id,
             'email' => $user->email,
         ]);
+
+        $response = $this->getJson('/api/user/' . $user->id+1);
+        $response->assertStatus(404); 
     }
 
     /** @test */
     public function it_can_update_a_user(){
-        // Create a user to update
         $user = User::factory()->create();
 
-        // Data for updating the user
         $updatedData = [
             'name' => 'Jane Doe',
             'email' => 'jane@example.com',
         ];
 
-        // Update the user using PUT request
         $response = $this->putJson('/api/user/' . $user->id, $updatedData);
+        $response->assertStatus(200); 
 
-        // Assert the response is successful
-        $response->assertStatus(200); // 200 OK
-
-        // Assert the user was updated in the database
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
             'email' => 'jane@example.com',
         ]);
+
+        $response = $this->putJson('/api/user/' . $user->id+1, $updatedData);
+        $response->assertStatus(404); 
     }
 
     /** @test */
@@ -100,10 +98,11 @@ class UserCrudTest extends TestCase
         Order::factory()->create();
         Shipping::factory()->create();
         
-        // Delete the user using DELETE request
         $response = $this->getJson('/api/user/' . $user->id . '/orders');
-
         $response->assertStatus(200); 
+
+        $response = $this->getJson('/api/user/' . 50 . '/orders');
+        $response->assertStatus(404); 
     }
 
     /** @test */
@@ -115,8 +114,10 @@ class UserCrudTest extends TestCase
         Shipping::factory()->create();
         
         $response = $this->getJson('/api/user/' . $user->id . '/shipping');
-
         $response->assertStatus(200); 
+
+        $response = $this->getJson('/api/user/' . 50 . '/shipping');
+        $response->assertStatus(404); 
     }
 
     /** @test */
@@ -129,7 +130,9 @@ class UserCrudTest extends TestCase
         Shipping::factory()->create();
         
         $response = $this->getJson('/api/user/' . $user->id . '/cart');
-
         $response->assertStatus(200); 
+
+        $response = $this->getJson('/api/user/' . $user->id+1 . '/cart');
+        $response->assertStatus(404); 
     }
 }

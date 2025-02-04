@@ -32,11 +32,13 @@ class ProductTypeCrudTest extends TestCase
         $productType = ProductType::factory()->create();
         
         $response = $this->getJson('/api/prodtype/' . $productType->id);
-
         $response->assertStatus(200); 
         $this->assertDatabaseHas('product_types', [
             'id' => $productType->id,
         ]);
+
+        $response = $this->getJson('/api/prodtype/' . $productType->id+1);
+        $response->assertStatus(404); 
     }
 
     /** @test */
@@ -48,12 +50,13 @@ class ProductTypeCrudTest extends TestCase
         ];
         
         $response = $this->putJson('/api/prodtype/' . $productType->id, $updatedData);
-
         $response->assertStatus(200);
-
         $this->assertDatabaseHas('product_types', [
             'name' => $updatedData['name'],
         ]);
+
+        $response = $this->putJson('/api/prodtype/' . $productType->id+1, $updatedData);
+        $response->assertStatus(404);
     }
 
     /** @test */
@@ -61,11 +64,12 @@ class ProductTypeCrudTest extends TestCase
         $productType = ProductType::factory()->create();
 
         $response = $this->deleteJson('/api/prodtype/' . $productType->id);
-
         $response->assertStatus(200);
-
         $this->assertDatabaseMissing('product_types', [
             'id' => $productType->id,
         ]);
+
+        $response = $this->deleteJson('/api/prodtype/' . $productType->id+1);
+        $response->assertStatus(404);
     }
 }

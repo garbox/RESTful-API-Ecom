@@ -40,14 +40,14 @@ class ProductCrudTest extends TestCase
         ProductType::factory()->create();
         $product = Product::factory()->create();
 
-        // Fetch the user using GET request
         $response = $this->getJson('/api/product/' . $product->id);
-
-        // Assert the response is successful
-        $response->assertStatus(200); // 200 OK
+        $response->assertStatus(200);
         $this->assertDatabaseHas('products', [
             'id' => $product->id,
         ]);
+
+        $response = $this->getJson('/api/product/' . $product->id+1);
+        $response->assertStatus(404);
     }
 
     /** @test */
@@ -66,12 +66,13 @@ class ProductCrudTest extends TestCase
         ];
         
         $response = $this->putJson('/api/product/' . $product->id, $updatedData);
-
         $response->assertStatus(200);
-
         $this->assertDatabaseHas('products', [
             'name' => $updatedData['name'],
         ]);
+
+        $response = $this->putJson('/api/product/' . $product->id+1, $updatedData);
+        $response->assertStatus(404);
     }
 
     /** @test */
@@ -79,35 +80,37 @@ class ProductCrudTest extends TestCase
         ProductType::factory()->create();
         $product = Product::factory()->create();
 
-        // Delete the user using DELETE request
         $response = $this->deleteJson('/api/product/' . $product->id);
-
-        // Assert the response is successful
-        $response->assertStatus(200); // 200 OK
-
-        // Assert the user was deleted from the database
+        $response->assertStatus(200);
         $this->assertDatabaseMissing('products', [
             'id' => $product->id,
         ]);
+
+        $response = $this->deleteJson('/api/product/' . $product->id+1);
+        $response->assertStatus(404);
     }
 
     /** @test */
     public function can_display_avaliable_products(){
+        $response = $this->getJson('/api/product/available');
+        $response->assertStatus(404); 
+
         ProductType::factory()->create();
         Product::factory()->create();
 
         $response = $this->getJson('/api/product/available');
-
         $response->assertStatus(200); 
     }
 
     /** @test */
     public function can_display_featured_products(){
+        $response = $this->getJson('/api/product/featured');
+        $response->assertStatus(404); 
+
         ProductType::factory()->create();
         Product::factory()->create();
 
         $response = $this->getJson('/api/product/featured');
-
         $response->assertStatus(200); 
     }
 }

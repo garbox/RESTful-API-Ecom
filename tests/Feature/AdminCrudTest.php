@@ -23,7 +23,6 @@ class AdminCrudTest extends TestCase
         ];
 
         $response = $this->postJson('/api/admin', $adminData);
-
         $response->assertStatus(201);
         $this->assertDatabaseHas('admins', [
             'email' => 'john@example.com',
@@ -44,6 +43,9 @@ class AdminCrudTest extends TestCase
             'id' => $admin->id,
             'email' => $admin->email,
         ]);
+
+        $response = $this->getJson('/api/admin/' . $admin->id+1);
+        $response->assertStatus(404); 
     }
 
     /** @test */
@@ -58,27 +60,27 @@ class AdminCrudTest extends TestCase
         $response = $this->putJson('/api/admin/' . $admin->id, $updatedData);
 
         $response->assertStatus(200);
-
         $this->assertDatabaseHas('admins', [
             'id' => $admin->id,
             'email' => 'jane@example.com',
         ]);
+
+        $response = $this->getJson('/api/user/' . $admin->id+1, $updatedData);
+        $response->assertStatus(404); 
     }
 
     /** @test */
     public function it_can_delete_a_admin(){
-        // Create a user to delete
         $admin = Admin::factory()->create();
 
-        // Delete the user using DELETE request
         $response = $this->deleteJson('/api/admin/' . $admin->id);
 
-        // Assert the response is successful
-        $response->assertStatus(200); // 200 OK
-
-        // Assert the user was deleted from the database
+        $response->assertStatus(200);
         $this->assertDatabaseMissing('admins', [
             'id' => $admin->id,
         ]);
+
+        $response = $this->deleteJson('/api/admin/' . $admin->id+1);
+        $response->assertStatus(404); 
     }
 }
