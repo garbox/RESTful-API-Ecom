@@ -24,9 +24,7 @@ class OrderController extends Controller
             $order->user->shipping->makeHidden('user_id')->makeHidden('order_id');
             $order->user->makeHidden('password', 'remember_token');
         }
-        return response()->json([
-            'orders' => $orders,
-        ], 200);
+        return response()->json($orders,200);
     }
 
     public function store(Request $request){
@@ -53,16 +51,15 @@ class OrderController extends Controller
         return response()->json($order, 200);
     }
 
-    public function update(Request $request, $orderId){
-        $validatedData = $request->validate([
-            'total_price' => 'nullable|integer|min:255',
-        ]);
-
+    public function update(Request $request, int $orderId){
         $order = Order::find($orderId);
-
         if (!$order) {
             return response()->json(['error' => 'Order not found'], 404);
         }
+
+        $validatedData = $request->validate([
+            'total_price' => 'nullable|integer|min:255',
+        ]);
 
         $order->total_price = $validatedData['total_price'];
         $order->save(); 
@@ -85,11 +82,15 @@ class OrderController extends Controller
         }
     }
 
-    public function orderByUser(int $orderId){
+    public function orderByUser(int $userId){
+        $user = User::find($userId);
+        if(!$user){
+            return response()->json(['message' => 'No user found'], 404);
+        }
 
-        $orders = Order::orderByUser($orderId);
+        $orders = Order::orderByUser($user);
 
-        if ($orders['orders']->isEmpty()) {
+        if (!$orders) {
             return response()->json([
                 'message' => 'No orders found for this user.',
             ], 404);

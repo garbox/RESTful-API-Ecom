@@ -47,16 +47,15 @@ class ProductTypeController extends Controller
         ],200);
     }
 
-    public function update(Request $request, $productTypeId){
-        $validatedData = collect($request->validate([
-            'name' => 'nullable|string|max:255',
-        ]));
-
+    public function update(Request $request, int $productTypeId){
         $productType = ProductType::find($productTypeId);
-
         if (!$productType) {
             return response()->json(['error' => 'Product not found'], 404);
         }
+
+        $validatedData = collect($request->validate([
+            'name' => 'nullable|string|max:255',
+        ]));
 
         $updatedData = $validatedData->filter(function ($value) {
             return !is_null($value);

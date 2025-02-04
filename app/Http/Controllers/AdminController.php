@@ -44,17 +44,17 @@ class AdminController extends Controller
         return response()->json($admin, 200);
     }
 
-    public function update(Request $request, $adminId){
+    public function update(Request $request, int $adminId){
+        $admin = Admin::find($adminId);
+
+        if (!$admin) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+
         $validatedData = $request->validate([
             'name' => 'nullable|string|max:255',
             'email' => 'nullable|email|unique:users,email,' . $adminId,
         ]);
-
-        $admin = Admin::find($adminId);
-
-        if (!$admin) {
-            return response()->json(['error' => 'User not found'], 404);
-        }
 
         $admin->name = $validatedData['name'];
         $admin->email = $validatedData['email'];

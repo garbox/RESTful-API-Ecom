@@ -50,16 +50,15 @@ class CartController extends Controller
         ],200);
     }
 
-    public function update(Request $request, $cartID){
-        $validatedData = $request->validate([
-            'quantity' => 'nullable|integer',
-        ]);
-
+    public function update(Request $request, int $cartID){
         $cart = Cart::find($cartID);
-
         if (!$cart) {
             return response()->json(['error' => 'Cart not found'], 404);
         }
+
+        $validatedData = $request->validate([
+            'quantity' => 'nullable|integer',
+        ]);
 
         $cart->quantity = $validatedData['quantity'];
         $cart->save(); 
@@ -69,9 +68,8 @@ class CartController extends Controller
 
     public function destroy(int $cartId){
         $cart = Cart::find($cartId);
-
         if (!$cart) {
-            return response()->json(['message' => 'Cart cannot be found.'], 200);
+            return response()->json(['message' => 'Cart cannot be found.'], 404);
         }
         
         if ($cart->delete()) {

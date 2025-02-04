@@ -44,17 +44,16 @@ class UserController extends Controller
         return response()->json(new UserResource($user),200);
     }
 
-    public function update(Request $request, $userID){
+    public function update(Request $request, int $userID){
+        $user = User::find($userID);
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+
         $validatedData = $request->validate([
             'name' => 'nullable|string|max:255',
             'email' => 'nullable|email|unique:users,email,' . $userID,
         ]);
-
-        $user = User::find($userID);
-
-        if (!$user) {
-            return response()->json(['error' => 'User not found'], 404);
-        }
 
         $user->name = $validatedData['name'];
         $user->email = $validatedData['email'];

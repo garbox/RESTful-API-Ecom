@@ -42,10 +42,7 @@ class ProductController extends Controller
         $product = Product::with('productType','photos')->find($productId);
 
         if(!$product){
-            return response()->json([
-                'message' => "Product not found",
-                'product' => null,
-            ], 404);
+            return response()->json($product, 404);
         }
 
         return response()->json([
@@ -53,7 +50,13 @@ class ProductController extends Controller
         ], 200);
     }
 
-    public function update(Request $request, $productId){
+    public function update(Request $request, int $productId){
+        $product = Product::find($productId);
+
+        if (!$product) {
+            return response()->json(['error' => 'Product not found'], 404);
+        }
+
         $validatedData = collect($request->validate([
             'name' => 'nullable|string|max:255',
             'price' => 'nullable|numeric',
@@ -63,12 +66,6 @@ class ProductController extends Controller
             'featured' => 'nullable|boolean',
             'available' => 'nullable|boolean',
         ]));
-
-        $product = Product::find($productId);
-
-        if (!$product) {
-            return response()->json(['error' => 'Product not found'], 404);
-        }
 
         $updatedData = $validatedData->filter(function ($value) {
             return !is_null($value);

@@ -48,7 +48,13 @@ class ShippingController extends Controller
         return response()->json($shipping , 200);
     }
 
-    public function update(Request $request, $shippingId){
+    public function update(Request $request, int $shippingId){
+        $shipping = Shipping::find($shippingId);
+
+        if (!$shipping) {
+            return response()->json(['error' => 'Shipping info not found'], 404);
+        }
+
         $validatedData = collect($request->validate([
             'name' => 'nullable|string|max:255',
             'email' => 'nullable|email|max:255',
@@ -58,12 +64,6 @@ class ShippingController extends Controller
             'state' => 'nullable|string|max:255',
             'phone' => 'nullable|string|max:20',
         ]));
-
-        $shipping = Shipping::find($shippingId);
-
-        if (!$shipping) {
-            return response()->json(['error' => 'Shipping info not found'], 404);
-        }
 
         $updatedData = $validatedData->filter(function ($value) {
             return !is_null($value);
