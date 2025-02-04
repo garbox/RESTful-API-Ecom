@@ -18,14 +18,9 @@ class Order extends Model
         'user_id', 'total_price', 'status_id', 'stripe_payment_intent_id'
     ];
 
-    public static function orderByUser(int $userId){
-        $user = User::find($userId);
-    
-        if (!$user) {
-            return false; 
-        }
+    public static function orderByUser(User $user){
 
-        return $user->with('orders')->find($userId)
+        return $user->with('orders')->find($user->id)
         ->makeHidden('password','remember_token', 'updated_at');
     }
 
