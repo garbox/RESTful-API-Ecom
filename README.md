@@ -14,11 +14,11 @@ This is a Ecommerce API application ready out of the box (after instaliation).
 
     php artisan migrate
 
-# Test Application
+## Test Application
 
     php artisan test
 
-# Get First API Key
+## Get First API Key
 
     php artisan app:first-api-token   
 
