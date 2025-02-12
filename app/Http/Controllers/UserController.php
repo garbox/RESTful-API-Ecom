@@ -55,11 +55,18 @@ class UserController extends Controller
             'email' => 'nullable|email|unique:users,email,' . $userID,
         ]);
 
-        $user->name = $validatedData['name'];
-        $user->email = $validatedData['email'];
+        // Update the name if it's provided
+        if (array_key_exists('name', $validatedData)) {
+            $user->name = $validatedData['name'];
+        }
+        
+        // Update the email if it's provided
+        if (array_key_exists('email', $validatedData)) {
+            $user->email = $validatedData['email'];
+        }
         $user->save(); 
 
-        return response()->json($user, 200); // HTTP 200 OK
+        return response()->json(new UserResource($user), 200); // HTTP 200 OK
     }
 
     public function destroy(int $userId){
