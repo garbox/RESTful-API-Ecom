@@ -34,6 +34,7 @@
 
   <div class="container my-5">
     <div class="row">
+
       <!-- Left Column (API URL List) -->
       <div class="col-md-6">
         <div class="api-url-list">
@@ -149,6 +150,11 @@
           </div>
 
           <div class="mb-3">
+            <label for="token" class="form-label">API Token</label>
+            <input type="text" class="form-control" id="token">
+          </div>
+
+          <div class="mb-3">
             <label for="body" class="form-label">Body</label>
             <textarea class="form-control" id="body" rows="4"></textarea>
           </div>
@@ -186,6 +192,7 @@
       const method = document.getElementById('method').value;
       const bodyInput = document.getElementById('body').value; // Get the body input
       const url = '{{url('')}}/api/' + document.getElementById('url').value;
+      const token = document.getElementById('token').value;
       
 
       // Display the submitted method and URL
@@ -195,7 +202,7 @@
       // Initialize the headers with prefilled values
       let headers = {
         'Content-Type': 'application/json',
-        'X-API-KEY': 'AA4kXT1TpbWTKL5NyNNGEoXvs5oRXo4Rsx',
+        'X-API-KEY': token,
       };
 
       // Prepare the fetch options
