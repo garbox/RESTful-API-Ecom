@@ -16,7 +16,6 @@ class OrderController extends Controller
         if ($orders->isEmpty()) {
             return response()->json([
                 'message' => 'There are no orders.',
-                'orders' => null,
             ], 404);
         }
 
