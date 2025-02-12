@@ -25,9 +25,9 @@ Route::resource('cart', CartController::class)->middleware(CheckApiKey::class);
 Route::get("order/user/{user_id}", [OrderController::class, 'orderByUser'])->middleware(CheckApiKey::class);
 Route::resource('order', OrderController::class)->middleware(CheckApiKey::class);
 
-Route::get("product/{productId}/productType", [ProductController::class, 'productTypes'])->middleware(CheckApiKey::class);
 Route::get("product/featured", [ProductController::class, 'featured'])->middleware(CheckApiKey::class);
 Route::get("product/available", [ProductController::class, 'available'])->middleware(CheckApiKey::class);
+Route::get("product/search/{search}", [ProductController::class, 'search'])->middleware(CheckApiKey::class);
 Route::resource('product', ProductController::class)->middleware(CheckApiKey::class);
 
 Route::resource('photo', PhotoController::class)->middleware(CheckApiKey::class);
