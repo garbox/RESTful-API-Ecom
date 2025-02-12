@@ -12,35 +12,33 @@ use App\Http\Controllers\StatusController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\ApiTokenController;
+use App\Http\Middleware\CheckApiKey;
 
+Route::resource('admin', AdminController::class)->middleware(CheckApiKey::class);
+Route::post("token/update", [ApiTokenController::class, 'update'])->middleware(CheckApiKey::class);
+Route::resource('token', ApiTokenController::class)->middleware(CheckApiKey::class);
 
-Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::get("cart/session/{session_id}", [CartController::class, 'cartBySession'])->middleware(CheckApiKey::class);
+Route::get("cart/user/{user_id}", [CartController::class, 'cartByUser'])->middleware(CheckApiKey::class);
+Route::resource('cart', CartController::class)->middleware(CheckApiKey::class);
 
-Route::resource('admin', AdminController::class);
-Route::resource('token', ApiTokenController::class);
+Route::get("order/user/{user_id}", [OrderController::class, 'orderByUser'])->middleware(CheckApiKey::class);
+Route::resource('order', OrderController::class)->middleware(CheckApiKey::class);
 
-Route::get("cart/session/{session_id}", [CartController::class, 'cartBySession']);
-Route::get("cart/user/{user_id}", [CartController::class, 'cartByUser']);
-Route::resource('cart', CartController::class);
+Route::get("product/{productId}/productType", [ProductController::class, 'productTypes'])->middleware(CheckApiKey::class);
+Route::get("product/featured", [ProductController::class, 'featured'])->middleware(CheckApiKey::class);
+Route::get("product/available", [ProductController::class, 'available'])->middleware(CheckApiKey::class);
+Route::resource('product', ProductController::class)->middleware(CheckApiKey::class);
 
-Route::get("order/user/{user_id}", [OrderController::class, 'orderByUser']);
-Route::resource('order', OrderController::class);
+Route::resource('photo', PhotoController::class)->middleware(CheckApiKey::class);
 
-Route::get("product/{productId}/productType", [ProductController::class, 'productTypes']);
-Route::get("product/featured", [ProductController::class, 'featured']);
-Route::get("product/available", [ProductController::class, 'available']);
-Route::resource('product', ProductController::class);
+Route::resource('prodtype', ProductTypeController::class)->middleware(CheckApiKey::class);
+Route::get("prodtype/{prodTypeId}/products", [ProductTypeController::class, 'products'])->middleware(CheckApiKey::class);
+Route::resource('shipping', ShippingController::class)->middleware(CheckApiKey::class);
 
-Route::resource('photo', PhotoController::class);
+Route::get("user/{userId}/shipping", [UserController::class, 'getShippingInfo'])->middleware(CheckApiKey::class);
+Route::get("user/{userId}/cart", [UserController::class, 'getCartInfo'])->middleware(CheckApiKey::class);
+Route::get("user/{userId}/totalSale", [UserController::class, 'totalSales'])->middleware(CheckApiKey::class);
+Route::get("user/{userId}/orders", [UserController::class, 'getOrders'])->middleware(CheckApiKey::class);
+Route::resource('user', UserController::class)->middleware(CheckApiKey::class);
 
-Route::resource('prodtype', ProductTypeController::class);
-Route::get("prodtype/{prodTypeId}/products", [ProductTypeController::class, 'products']);
-Route::resource('shipping', ShippingController::class);
-
-Route::get("user/{userId}/orders", [UserController::class, 'getOrders']);
-Route::get("user/{userId}/shipping", [UserController::class, 'getShippingInfo']);
-Route::get("user/{userId}/cart", [UserController::class, 'getCartInfo']);
-Route::get("user/{userId}/totalSale", [UserController::class, 'totalSales']);
-Route::resource('user', UserController::class);
