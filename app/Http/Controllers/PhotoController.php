@@ -17,7 +17,7 @@ class PhotoController extends Controller
             ], 404);
         }
     
-        return response()->json($photos->toJson(), 200);
+        return response()->json($photos, 200);
     }
 
     public function store(Request $request){
@@ -42,7 +42,7 @@ class PhotoController extends Controller
             ]);
         }
     
-        return response()->json($photos->toJson(), 201);
+        return response()->json($photos, 201);
     }
     
     public function show(int $photoId){
@@ -54,7 +54,7 @@ class PhotoController extends Controller
             ], 404);
         }
 
-        return response()->json($photo->toJson(),200);
+        return response()->json($photo,200);
     }
 
     public function destroy(int $photoId){

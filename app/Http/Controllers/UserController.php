@@ -29,7 +29,7 @@ class UserController extends Controller
 
         $user = User::create($validatedData);
 
-        return response()->json($user->toJson(), 201);
+        return response()->json($user, 201);
     }
 
     public function show(int $userId){
@@ -59,7 +59,7 @@ class UserController extends Controller
         $user->email = $validatedData['email'];
         $user->save(); 
 
-        return response()->json($user->toJson(), 200); // HTTP 200 OK
+        return response()->json($user, 200); // HTTP 200 OK
     }
 
     public function destroy(int $userId){
@@ -83,14 +83,12 @@ class UserController extends Controller
         if(!$orders){
             return response()->json([
                 'message' => "User not found",
-                'user' => null
             ], 404);
         }
 
         if($orders->orders->isEmpty()){
             return response()->json([
                 'message' => "User has no orders",
-                'user' => null
             ], 404);
         }
 
@@ -100,7 +98,7 @@ class UserController extends Controller
         }
 
         $orders->makeHidden('password','remember_token', 'email_verified_at');
-        return response()->json($orders->toJson(), 200);
+        return response()->json($orders, 200);
     }
 
     public function getShippingInfo(int $userId){
@@ -109,14 +107,12 @@ class UserController extends Controller
         if(!$userOrders){
             return response()->json([
                 'message' => "User cant not be found",
-                'user' => null
             ], 404);
         }
 
         if($userOrders->orders->isEmpty()){
             return response()->json([
                 'message' => "User has no orders",
-                'user' => null
             ], 404);
         }
         
@@ -126,7 +122,7 @@ class UserController extends Controller
 
         $userOrders->makeHidden('password','remember_token', 'email_verified_at','orders',);
         
-        return response()->json($userOrders->toJson(),200);
+        return response()->json($userOrders,200);
     }
 
     public function getCartInfo(int $userId){
@@ -134,15 +130,13 @@ class UserController extends Controller
         
         if(!$userCart){
             return response()->json([
-                'message' => "User cant not be found",
-                'user' => null
+                'message' => "User can not be found",
             ], 404);
         }
 
         if($userCart->carts->isEmpty()){
             return response()->json([
-                'message' => "User has no orders",
-                'user' => null
+                'message' => "User cart is empty",
             ], 404);
         }
         
@@ -152,7 +146,7 @@ class UserController extends Controller
 
         $userCart->makeHidden('password','remember_token', 'email_verified_at','orders',);
         
-        return response()->json($userCart->toJson(), 200);
+        return response()->json($userCart, 200);
     }
 
     public function totalSales(int $userId){

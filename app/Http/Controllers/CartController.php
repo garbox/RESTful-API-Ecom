@@ -31,7 +31,7 @@ class CartController extends Controller
 
         $cart = Cart::create($validatedData);
     
-        return response()->json($cart->toJson(), 201);
+        return response()->json($cart, 201);
     }
 
     public function show(int $cartId){
@@ -61,7 +61,7 @@ class CartController extends Controller
         $cart->quantity = $validatedData['quantity'];
         $cart->save(); 
 
-        return response()->json($cart->toJson(), 200);
+        return response()->json($cart, 200);
     }
 
     public function destroy(int $cartId){

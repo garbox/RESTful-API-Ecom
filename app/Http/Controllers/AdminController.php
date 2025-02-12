@@ -17,7 +17,7 @@ class AdminController extends Controller
             ], 404);
         }
 
-        return response()->json($admins->toJson(), 201);
+        return response()->json($admins, 201);
     }
 
     public function store(Request $request){
@@ -30,7 +30,7 @@ class AdminController extends Controller
     
         $admin = Admin::create($validatedData);
     
-        return response()->json($admin->toJson(), 201);
+        return response()->json($admin, 201);
     }
 
     public function show(int $adminId){
@@ -40,7 +40,7 @@ class AdminController extends Controller
                 'message' => 'Admin user not found.'
             ], 404);
         }
-        return response()->json($admin->toJson(), 200);
+        return response()->json($admin, 200);
     }
 
     public function update(Request $request, int $adminId){
@@ -59,7 +59,7 @@ class AdminController extends Controller
         $admin->email = $validatedData['email'];
         $admin->save(); 
 
-        return response()->json($admin->toJson(), 200); // HTTP 200 OK
+        return response()->json($admin, 200); // HTTP 200 OK
     }
 
     public function destroy(int $adminId){

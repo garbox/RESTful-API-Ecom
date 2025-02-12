@@ -18,7 +18,7 @@ class ApiTokenController extends Controller
             ], 404);
         }
 
-        return response()->json($tokens->toJson(), 201);
+        return response()->json($tokens, 201);
     }
 
     public function store(Request $request){
@@ -30,7 +30,7 @@ class ApiTokenController extends Controller
     
         $apiToken = ApiToken::create($validatedData);
     
-        return response()->json($apiToken->toJson(), 201); // Explicitly converting to an array
+        return response()->json($apiToken, 201); // Explicitly converting to an array
     }
 
     public function show(string $apiToken){
@@ -42,7 +42,7 @@ class ApiTokenController extends Controller
             ], 404);
         }
 
-        return response()->json($token->toJson(), 200);
+        return response()->json($token, 200);
     }
 
     public function update(Request $request){
@@ -55,7 +55,7 @@ class ApiTokenController extends Controller
         $token->app_name = $validatedData['app_name'];
         $token->save(); 
 
-        return response()->json($token->toJson(), 200);
+        return response()->json($token, 200);
     }
 
     public function destroy(int $apiToken){
