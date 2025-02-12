@@ -17,7 +17,7 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->integer('total_price');
-            $table->foreignIdFor(User::class)->references('id')->on('users');
+            $table->foreignIdFor(User::class)->constrained()->onDelete('cascade');
             $table->string('stripe_payment_intent_id');
             $table->timestamp('created_at')->useCurrent();    
             $table->timestamp('updated_at')->useCurrent(); 

@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('shippings', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class)->references('id')->on('users');
-            $table->foreignIdFor(Order::class)->references('id')->on('orders');
+            $table->foreignIdFor(User::class)->constrained()->onDelete('cascade');
+            $table->foreignIdFor(Order::class)->constrained()->onDelete('cascade');
             $table->string('name');
             $table->string('email');
             $table->string('phone');

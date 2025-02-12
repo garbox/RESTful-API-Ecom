@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name')->index();
             $table->mediumText('short_description');
             $table->integer('price');
-            $table->foreignIdFor(ProductType::class)->references('id')->on('product_types');
+            $table->foreignIdFor(ProductType::class)->constrained()->onDelete('cascade');
             $table->mediumText('long_description');
             $table->boolean('featured');
             $table->boolean('available');
