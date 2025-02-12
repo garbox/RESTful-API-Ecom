@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\ApiToken;
 use Illuminate\Support\Str;
+use App\Models\ApiToken;
 
 class ApiTokenController extends Controller
 {
@@ -18,19 +18,19 @@ class ApiTokenController extends Controller
             ], 404);
         }
 
-        return response()->json($tokens, 201);
+        return response()->json($tokens->toJson(), 201);
     }
 
     public function store(Request $request){
         $validatedData = $request->validate([
             'app_name' => 'required|string|max:255',
         ]);
-        
-        $validatedData['api_token'] = Str::random(25);
+
+        $validatedData['api_token'] = Str::random(34);
     
         $apiToken = ApiToken::create($validatedData);
     
-        return response()->json($apiToken, 201);
+        return response()->json($apiToken->toJson(), 201); // Explicitly converting to an array
     }
 
     public function show(string $apiToken){
@@ -42,15 +42,11 @@ class ApiTokenController extends Controller
             ], 404);
         }
 
-        return response()->json($token, 200);
+        return response()->json($token->toJson(), 200);
     }
 
-    public function update(Request $request, int $apiToken){
-        $token = ApiToken::find($apiToken);
-
-        if (!$token) {
-            return response()->json(['message' => 'API token not found'], 404);
-        }
+    public function update(Request $request){
+        $token = ApiToken::where('api_token', $request->header('X-API-KEY'))->first();
 
         $validatedData = $request->validate([
             'app_name' => 'nullable|string|max:255',
@@ -59,7 +55,7 @@ class ApiTokenController extends Controller
         $token->app_name = $validatedData['app_name'];
         $token->save(); 
 
-        return response()->json($token, 200); // HTTP 200 OK
+        return response()->json($token->toJson(), 200);
     }
 
     public function destroy(int $apiToken){

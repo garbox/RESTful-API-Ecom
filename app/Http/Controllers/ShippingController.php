@@ -14,7 +14,7 @@ class ShippingController extends Controller
                 'message' => 'There are no shipping information avaliable.',
             ], 404);
         }
-        return response()->json($shipping, 201);
+        return response()->json($shipping->toJson(), 201);
     }
 
     public function store(Request $request){
@@ -32,7 +32,7 @@ class ShippingController extends Controller
 
         $shipping = Shipping::create($validatedData);
     
-        return response()->json($shipping, 201);
+        return response()->json($shipping->toJson(), 201);
     }
 
     public function show(int $shippingId){
@@ -45,7 +45,7 @@ class ShippingController extends Controller
             ], 404);
         }
 
-        return response()->json($shipping , 200);
+        return response()->json($shipping->toJson(), 200);
     }
 
     public function update(Request $request, int $shippingId){
@@ -71,7 +71,7 @@ class ShippingController extends Controller
 
         $shipping->update($updatedData->toArray());
 
-        return response()->json($shipping, 200);
+        return response()->json($shipping->toJson(), 200);
     }
 
     public function destroy(int $shippingId){

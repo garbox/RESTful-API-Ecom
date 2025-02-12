@@ -17,9 +17,7 @@ class ProductController extends Controller
             ], 404);
         }
     
-        return response()->json([
-            'products' => $products
-        ], 200);
+        return response()->json($products->toJson(), 200);
     }
 
     public function store(Request $request){
@@ -35,7 +33,7 @@ class ProductController extends Controller
     
         $product = Product::create($validatedData);
     
-        return response()->json($product, 201);
+        return response()->json($product->toJson(), 201);
     }
 
     public function show(int $productId){
@@ -45,9 +43,7 @@ class ProductController extends Controller
             return response()->json($product, 404);
         }
 
-        return response()->json([
-            'product' => $product,
-        ], 200);
+        return response()->json($product->toJson(),200);
     }
 
     public function update(Request $request, int $productId){
@@ -73,7 +69,7 @@ class ProductController extends Controller
 
         $product->update($updatedData->toArray());
 
-        return response()->json($product, 200); // HTTP 200 OK
+        return response()->json($product->toJson(), 200); // HTTP 200 OK
     }
 
     public function destroy(int $productId){
@@ -101,9 +97,7 @@ class ProductController extends Controller
             ], 404);
         }
 
-        return response()->json([
-            'products' => $products
-        ], 200);
+        return response()->json($products->toJson(), 200);
 
     }
 
@@ -117,9 +111,7 @@ class ProductController extends Controller
             ], 404);
         }
 
-        return response()->json([
-            'products' => $products
-        ], 200);
+        return response()->json($products->toJson(), 200);
 
     }
 

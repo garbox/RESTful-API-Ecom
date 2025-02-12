@@ -24,7 +24,7 @@ class OrderController extends Controller
             $order->user->shipping->makeHidden('user_id')->makeHidden('order_id');
             $order->user->makeHidden('password', 'remember_token');
         }
-        return response()->json($orders,200);
+        return response()->json($orders->toJson(),200);
     }
 
     public function store(Request $request){
@@ -36,7 +36,7 @@ class OrderController extends Controller
     
         $user = Order::create($validatedData);
     
-        return response()->json($user, 201);
+        return response()->json($user->toJson(), 201);
     }
 
     public function show(int $cartId){
@@ -48,7 +48,7 @@ class OrderController extends Controller
             ], 404);
         }
         
-        return response()->json($order, 200);
+        return response()->json($order->toJson(), 200);
     }
 
     public function update(Request $request, int $orderId){
@@ -64,7 +64,7 @@ class OrderController extends Controller
         $order->total_price = $validatedData['total_price'];
         $order->save(); 
 
-        return response()->json($order, 200); 
+        return response()->json($order->toJson(), 200); 
     }
 
     public function destroy(int $orderId){
@@ -96,7 +96,7 @@ class OrderController extends Controller
             ], 404);
         }
 
-        return response()->json($orders,200);
+        return response()->json($orders->toJson(),200);
     }
 
     //-------Not used but reponse needed --->

@@ -29,7 +29,7 @@ class UserController extends Controller
 
         $user = User::create($validatedData);
 
-        return response()->json($user, 201);
+        return response()->json($user->toJson(), 201);
     }
 
     public function show(int $userId){
@@ -59,7 +59,7 @@ class UserController extends Controller
         $user->email = $validatedData['email'];
         $user->save(); 
 
-        return response()->json($user, 200); // HTTP 200 OK
+        return response()->json($user->toJson(), 200); // HTTP 200 OK
     }
 
     public function destroy(int $userId){
@@ -100,9 +100,7 @@ class UserController extends Controller
         }
 
         $orders->makeHidden('password','remember_token', 'email_verified_at');
-        return response()->json([
-            'user' => $orders,
-        ], 200);
+        return response()->json($orders->toJson(), 200);
     }
 
     public function getShippingInfo(int $userId){
@@ -128,9 +126,7 @@ class UserController extends Controller
 
         $userOrders->makeHidden('password','remember_token', 'email_verified_at','orders',);
         
-        return response()->json([
-            'user' => $userOrders,
-        ], 200);
+        return response()->json($userOrders->toJson(),200);
     }
 
     public function getCartInfo(int $userId){
@@ -156,9 +152,7 @@ class UserController extends Controller
 
         $userCart->makeHidden('password','remember_token', 'email_verified_at','orders',);
         
-        return response()->json([
-            'user' => $userCart,
-        ], 200);
+        return response()->json($userCart->toJson(), 200);
     }
 
     public function totalSales(int $userId){

@@ -17,9 +17,7 @@ class ProductTypeController extends Controller
             ], 200);
         }
 
-        return response()->json([
-            'product_type' =>$productType, 
-        ],200);
+        return response()->json($productType->toJson(),200);
     }
 
     public function store(Request $request){
@@ -29,7 +27,7 @@ class ProductTypeController extends Controller
     
         $productType = ProductType::create($validatedData);
     
-        return response()->json($productType, 201);
+        return response()->json($productType->toJson(), 201);
     }
 
     public function show(int $prodTypeId){
@@ -42,9 +40,7 @@ class ProductTypeController extends Controller
             ], 404);
         }
 
-        return response()->json([
-            'product_type' =>$prodType
-        ],200);
+        return response()->json($prodType->toJson(),200);
     }
 
     public function update(Request $request, int $productTypeId){
@@ -63,7 +59,7 @@ class ProductTypeController extends Controller
 
         $productType->update($updatedData->toArray());
 
-        return response()->json($productType, 200);
+        return response()->json($productType->toJson(), 200);
     }
 
     public function destroy(int $productTypeId){
@@ -100,9 +96,7 @@ class ProductTypeController extends Controller
             ], 200);
         }
 
-        return response()->json([
-            'product_type' => $products
-        ], 200);
+        return response()->json($products->toJson(),200);
     }
 
     //-------Not used but reponse needed --->

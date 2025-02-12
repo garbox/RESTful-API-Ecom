@@ -14,13 +14,11 @@ class CartController extends Controller
         if($carts->isEmpty()){
             return response()->json([
                 'message' => 'There are no cart items.',
-                'status' => 200,
-            ], );
+            ], 404);
         }
         return response()->json([
             'carts' => $carts,
-            'status' => 200
-        ]);
+        ], 201);
     }
 
     public function store(Request $request){
@@ -33,7 +31,7 @@ class CartController extends Controller
 
         $cart = Cart::create($validatedData);
     
-        return response()->json($cart, 201);
+        return response()->json($cart->toJson(), 201);
     }
 
     public function show(int $cartId){
@@ -63,7 +61,7 @@ class CartController extends Controller
         $cart->quantity = $validatedData['quantity'];
         $cart->save(); 
 
-        return response()->json($cart, 200);
+        return response()->json($cart->toJson(), 200);
     }
 
     public function destroy(int $cartId){
