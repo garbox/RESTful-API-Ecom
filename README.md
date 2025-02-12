@@ -1,16 +1,6 @@
 # Ecommerce API application
 
-This is a Ecommerce API application ready out of the box (after instaliation)  
-
-The entire application is contained within the `app.rb` file.
-
-`config.ru` is a minimal Rack configuration for unicorn.
-
-`run-tests.sh` runs a simplistic test and generates the API
-documentation below.
-
-It uses `run-curl-tests.rb` which runs each command defined in
-`commands.yml`.
+This is a Ecommerce API application ready out of the box (after instaliation).
 
 ## Clone Repo
 
@@ -27,6 +17,10 @@ It uses `run-curl-tests.rb` which runs each command defined in
 # Test Application
 
     php artisan test
+
+# Get First API Key
+
+    php artisan app:first-api-token   
 
 ## Get Users
 
