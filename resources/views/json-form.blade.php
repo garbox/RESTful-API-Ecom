@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Laravel API Form</title>
+  <title>Ecommerce API Playground</title>
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -82,7 +82,7 @@
                 <li>GET /photo</li>
                 <li>GET /photo/{photo_id}</li>
                 <li>POST /photo</li>
-                <li>DELETE /photo/{cart_id}</li>
+                <li>DELETE /photo/{photo_id}</li>
               </ul>
             </div>
             <!-- Column 2 -->
