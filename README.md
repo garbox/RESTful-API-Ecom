@@ -24,7 +24,7 @@ This is a Ecommerce API application ready out of the box (after instaliation).
 
 # API Endpoints 
 
-### Get Users
+## Get Users
 
 #### Request
 
@@ -33,7 +33,7 @@ This is a Ecommerce API application ready out of the box (after instaliation).
 #### Response
 
 
-### Get single user
+## Get single user
 
 #### Request
 
