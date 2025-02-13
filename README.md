@@ -24,22 +24,22 @@ This is a Ecommerce API application ready out of the box (after instaliation).
 
 # API Endpoints 
 
-## Get Users
+### Get Users
 
-### Request
+#### Request
 
 `GET /user/`
 
-### Response
+#### Response
 
 
-## Get single user
+### Get single user
 
-### Request
+#### Request
 
 
 `GET /user/{user_id}`
 
-### Response
+#### Response
 
 
