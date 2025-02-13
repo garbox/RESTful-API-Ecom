@@ -31,22 +31,38 @@ This is a Ecommerce API application ready out of the box (after instaliation).
 `GET /user/`
 
 #### Response
-    { 
-        "id": int, 
-        "name": string, 
-        "email": string, 
-        "email_verified_at": date, 
-        "created_at": date 
-    }    
-
+    json object with all users in following format
+    [
+        { 
+            "id": int, 
+            "name": string, 
+            "email": string, 
+            "email_verified_at": date, 
+            "created_at": date 
+        }
+        { 
+            "id": int, 
+            "name": string, 
+            "email": string, 
+            "email_verified_at": date, 
+            "created_at": date 
+        }
+    ]   
 
 ## Get single user
 
 #### Request
 
-
 `GET /user/{user_id}`
 
 #### Response
+        json object with single user 
+        { 
+            "id": int, 
+            "name": string, 
+            "email": string, 
+            "email_verified_at": date, 
+            "created_at": date 
+        }
 
 
