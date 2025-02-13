@@ -26,8 +26,10 @@ class AdminController extends Controller
             'email' => 'required|email|unique:admins,email',
             'role_id' => 'required|integer',
             'permissions' => 'required|integer',
+            'password' => 'required|string|min:8',
         ]);
-    
+        
+        $validatedData['password'] = Hash::make($validatedData['password']);
         $admin = Admin::create($validatedData);
     
         return response()->json($admin, 201);
