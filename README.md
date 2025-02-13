@@ -53,6 +53,7 @@ This is a Ecommerce API application ready out of the box (after instaliation).
     }
 ]   
 ```
+
 ## Get single admin
 
 ### Request
@@ -76,7 +77,7 @@ This is a Ecommerce API application ready out of the box (after instaliation).
 
 ### Request
 
-`POST /admin
+`POST /admin`
 ```
 {
     name: string,
@@ -103,7 +104,7 @@ This is a Ecommerce API application ready out of the box (after instaliation).
 
 ### Request
 
-`DELETE /admin/{admin_id}
+`DELETE /admin/{admin_id}`
 
 ### Response
 ```
