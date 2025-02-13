@@ -10,6 +10,6 @@ class ApiToken extends Model
     use HasFactory;
 
     protected $fillable = [
-        'app_name', 'api_token'
+        'app_name', 'api_token', 'admin_token'
     ];
 }
