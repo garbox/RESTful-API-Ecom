@@ -13,17 +13,14 @@ class MakeFirstAPIKey extends Command
      *
      * @var string
      */
-    protected $signature = 'app:first-api-token';
-    protected $description = 'Create applications first API token';
+    protected $signature = 'app:admin-api-token';
+    protected $description = 'Create applications admin API token';
 
     /**
      * Execute the console command.
      */
     public function handle()
     {
-        // Ask the user for the app name
-
-    
         $existingToken = ApiToken::first(); // Get the first token record from the database
     
         if ($existingToken) {
@@ -35,6 +32,7 @@ class MakeFirstAPIKey extends Command
             $token = [
                 'app_name' => $name,
                 'api_token' => Str::random(34), // Generate a new API token
+                'admin_token' => true,
             ];
     
 
