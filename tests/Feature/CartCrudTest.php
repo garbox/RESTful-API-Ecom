@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 use App\Models\User;
 use App\Models\Cart;
 use App\Models\Product;
-use App\Models\ProductType;
+use App\Models\Category;
 use Tests\TestCase;
 
 
@@ -19,7 +19,7 @@ class CartCrudTest extends TestCase
 
     /** @test */
     public function it_can_create_an_cart(){
-        ProductType::factory()->create();
+        Category::factory()->create();
         Product::factory()->create();
         User::factory()->create();
 
@@ -40,7 +40,7 @@ class CartCrudTest extends TestCase
 
     /** @test */
     public function it_can_read_cart(){
-        ProductType::factory()->create();
+        Category::factory()->create();
         Product::factory()->create();
         User::factory()->create();
         $cart = Cart::factory()->create();
@@ -57,7 +57,7 @@ class CartCrudTest extends TestCase
 
     /** @test */
     public function it_can_update_a_cart(){
-        ProductType::factory()->create();
+        Category::factory()->create();
         Product::factory()->create();
         User::factory()->create();
         $cart = Cart::factory()->create();
@@ -79,7 +79,7 @@ class CartCrudTest extends TestCase
 
     /** @test */
     public function it_can_delete_a_cart(){
-        ProductType::factory()->create();
+        Category::factory()->create();
         Product::factory()->create();
         User::factory()->create();
         $cart = Cart::factory()->create();

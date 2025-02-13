@@ -30,12 +30,10 @@ class User extends Model
         return $this->hasMany(Order::class);
     }
 
-    //-----relationships----
     public function carts(){
         return $this->hasMany(Cart::class);
     }
 
-    //-----relationships----
     public function shipping(){
         return $this->hasMany(Shipping::class);
     }

@@ -50,10 +50,10 @@ class AdminController extends Controller
             return response()->json(['message' => 'User not found'], 404);
         }
 
-        $validatedData = $request->validate([
+        $validatedData = collect($request->validate([
             'name' => 'nullable|string|max:255',
             'email' => 'nullable|email|unique:users,email,' . $adminId,
-        ]);
+        ]));
 
         $updatedData = array_filter($validatedData, function ($value) {
             return !is_null($value);

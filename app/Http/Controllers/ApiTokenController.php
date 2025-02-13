@@ -48,9 +48,9 @@ class ApiTokenController extends Controller
     public function update(Request $request){
         $token = ApiToken::where('api_token', $request->header('X-API-KEY'))->first();
 
-        $validatedData = $request->validate([
+        $validatedData = collect($request->validate([
             'app_name' => 'nullable|string|max:255',
-        ]);
+        ]));
 
         $updatedData = array_filter($validatedData, function ($value) {
             return !is_null($value);

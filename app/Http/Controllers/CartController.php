@@ -9,7 +9,7 @@ use App\Models\User;
 class CartController extends Controller
 {
     public function index(){
-        $carts = Cart::with('product.productType')->get();
+        $carts = Cart::with('product.category')->get();
 
         if($carts->isEmpty()){
             return response()->json([
@@ -35,7 +35,7 @@ class CartController extends Controller
     }
 
     public function show(int $cartId){
-        $cart = Cart::with('product.productType')->find($cartId);
+        $cart = Cart::with('product.category')->find($cartId);
 
         if(!$cart){
             return response()->json([
@@ -55,9 +55,9 @@ class CartController extends Controller
             return response()->json(['error' => 'Cart not found'], 404);
         }
 
-        $validatedData = $request->validate([
+        $validatedData = collect($request->validate([
             'quantity' => 'nullable|integer',
-        ]);
+        ]));
 
         $updatedData = array_filter($validatedData, function ($value) {
             return !is_null($value);
@@ -112,8 +112,6 @@ class CartController extends Controller
                 'message' => 'Cart not found for the given user id.'
             ], 200); 
         }
-        return response()->json([
-            'user' =>$cart,
-        ],200);
+        return response()->json($cart,200);
     }
 }

@@ -6,7 +6,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Str;
 use App\Models\Product;
-use App\Models\ProductType;
+use App\Models\Category;
 use Tests\TestCase;
 
 class ProductCrudTest extends TestCase
@@ -15,14 +15,14 @@ class ProductCrudTest extends TestCase
 
     /** @test */
     public function it_can_create_an_product(){
-        $productType = ProductType::factory()->create();
+        $category = Category::factory()->create();
 
         $productData = [
             'name' => Str::random(10),
             'price' => 5000,
             'short_description' => Str::random(25),
             'long_description' => Str::random(25),
-            'product_type_id' => $productType->id,
+            'product_type_id' => $category->id,
             'featured' => (bool) rand(0, 1),
             'available' => (bool) rand(0, 1), 
         ];
@@ -52,7 +52,7 @@ class ProductCrudTest extends TestCase
 
     /** @test */
     public function it_can_update_a_product(){
-        $productType = ProductType::factory()->create();
+        $category = Category::factory()->create();
         $product = Product::factory()->create();
 
         $updatedData = [
@@ -60,7 +60,7 @@ class ProductCrudTest extends TestCase
             'price' => 5000,
             'short_description' => Str::random(25),
             'long_description' => Str::random(25),
-            'product_type_id' => $productType->id,
+            'product_type_id' => $category->id,
             'featured' => (bool) rand(0, 1),
             'available' => (bool) rand(0, 1), 
         ];
@@ -77,7 +77,7 @@ class ProductCrudTest extends TestCase
 
     /** @test */
     public function it_can_delete_a_product(){
-        ProductType::factory()->create();
+        Category::factory()->create();
         $product = Product::factory()->create();
 
         $response = $this->deleteJson('/api/product/' . $product->id);
@@ -95,7 +95,7 @@ class ProductCrudTest extends TestCase
         $response = $this->getJson('/api/product/available');
         $response->assertStatus(404); 
 
-        ProductType::factory()->create();
+        Category::factory()->create();
         Product::factory()->create();
 
         $response = $this->getJson('/api/product/available');
@@ -107,7 +107,7 @@ class ProductCrudTest extends TestCase
         $response = $this->getJson('/api/product/featured');
         $response->assertStatus(404); 
 
-        ProductType::factory()->create();
+        Category::factory()->create();
         Product::factory()->create();
 
         $response = $this->getJson('/api/product/featured');

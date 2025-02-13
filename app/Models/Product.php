@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Http\Request;
-use App\Models\ProductType;
+use App\Models\Category;
 
 class Product extends Model
 {
@@ -17,18 +17,19 @@ class Product extends Model
     ];
 
     public static function available(){
-        return Product::with('productType')
+        return Product::with('category')
         ->where('available', 1);
     }
 
     public static function featured(){
-        return Product::with('productType')
-        ->where('featured', 1);
+        return Product::with('category')
+        ->where('featured', 1)
+        ->where('available', 1);
     }
 
     //------relationships---------
-    public function productType(): BelongsTo{
-        return $this->belongsTo(ProductType::class);
+    public function category(): BelongsTo{
+        return $this->belongsTo(Category::class);
     }
 
     public function cart(): HasMany{

@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Models\ProductType;
+use App\Models\Category;
 
 return new class extends Migration
 {
@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name')->index();
             $table->mediumText('short_description');
             $table->integer('price');
-            $table->foreignIdFor(ProductType::class)->constrained()->onDelete('cascade');
+            $table->foreignIdFor(Category::class)->constrained()->onDelete('cascade');
             $table->mediumText('long_description');
             $table->boolean('featured');
             $table->boolean('available');

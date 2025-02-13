@@ -8,7 +8,7 @@ use Tests\TestCase;
 use App\Models\User;
 use App\Models\Order;
 use App\Models\Product;
-use App\Models\ProductType;
+use App\Models\Category;
 use App\Models\Shipping;
 use App\Models\Cart;
 
@@ -93,7 +93,7 @@ class UserCrudTest extends TestCase
     /** @test */
     public function it_can_get_orders_for_a_user(){
         $user = User::factory()->create();
-        ProductType::factory()->create();
+        Category::factory()->create();
         Product::factory()->create();
         Order::factory()->create();
         Shipping::factory()->create();
@@ -108,7 +108,7 @@ class UserCrudTest extends TestCase
     /** @test */
     public function it_can_get_shipping_info_for_a_user(){
         $user = User::factory()->create();
-        ProductType::factory()->create();
+        Category::factory()->create();
         Product::factory()->create();
         Order::factory()->create();
         Shipping::factory()->create();
@@ -123,7 +123,7 @@ class UserCrudTest extends TestCase
     /** @test */
     public function it_can_get_cart_info_for_a_user(){
         $user = User::factory()->create();
-        ProductType::factory()->create();
+        Category::factory()->create();
         Product::factory()->create();
         Order::factory()->create();
         Cart::factory()->create();

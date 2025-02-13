@@ -19,7 +19,8 @@ class AdminFactory extends Factory
         return [
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
-            'role_id' => 1, // Default password
+            'role_id' => 1,
+            'password' => bcrypt('password'), // Default password
             'permissions' => 1,
         ];
     }

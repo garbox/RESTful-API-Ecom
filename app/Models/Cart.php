@@ -20,9 +20,9 @@ class Cart extends Model
         $user = User::with('carts.product')->find($userId);
 
         foreach ($user->carts as $cart) {
-            $cart->product['product_type'] = ProductType::find($cart->product['product_type_id']);
+            $cart->product['category'] = ProductType::find($cart->product['category_id']);
             $cart->product->product_type->makeHidden('updated_at', 'created_at');
-            $cart->product->makeHidden('short_description', 'long_description','created_at','updated_at','product_type_id');
+            $cart->product->makeHidden('short_description', 'long_description','created_at','updated_at','category_id');
             $cart->makeHidden('product_id', "user_id",'created_at','updated_at');
         }
 
@@ -31,13 +31,13 @@ class Cart extends Model
     }
 
     public static function sessionCart(string $sessionToken){
-        $cart =  Cart::with('product.productType') // Eager load product and its product_type
+        $cart =  Cart::with('product.category') // Eager load product and its product_type
         ->where('session_id', $sessionToken)
         ->get();
 
         $cart->each(function($cartItem) {
             $cartItem->product->productType->makeHidden('updated_at', 'created_at');
-            $cartItem->product->makeHidden('product_type_id','updated_at', 'created_at', 'short_description', 'long_description');
+            $cartItem->product->makeHidden('category_id','updated_at', 'created_at', 'short_description', 'long_description');
             $cartItem->makeHidden('product_id','updated_at', 'created_at');
         });
 

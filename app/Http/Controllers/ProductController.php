@@ -8,7 +8,7 @@ use App\Models\Product;
 class ProductController extends Controller
 {
     public function index(){
-        $products = Product::with('productType')->get();
+        $products = Product::with('category')->get();
     
         if ($products->isEmpty()) {
             return response()->json([
@@ -37,7 +37,7 @@ class ProductController extends Controller
     }
 
     public function show(int $productId){
-        $product = Product::with('productType','photos')->find($productId);
+        $product = Product::with('category','photos')->find($productId);
 
         if(!$product){
             return response()->json($product, 404);
@@ -53,7 +53,7 @@ class ProductController extends Controller
             return response()->json(['error' => 'Product not found'], 404);
         }
 
-        $validatedData = $request->validate([
+        $validatedData = collect($request->validate([
             'name' => 'nullable|string|max:255',
             'price' => 'nullable|numeric',
             'short_description' => 'nullable|string',
@@ -61,7 +61,7 @@ class ProductController extends Controller
             'product_type_id' => 'nullable|exists:product_types,id',
             'featured' => 'nullable|boolean',
             'available' => 'nullable|boolean',
-        ]);
+        ]));
 
         $updatedData = $validatedData->filter(function ($value) {
             return !is_null($value);
@@ -93,7 +93,6 @@ class ProductController extends Controller
         if ($products->isEmpty()) {
             return response()->json([
                 'message' => 'There are no products featured at the moment.',
-                'products' => null,
             ], 404);
         }
 

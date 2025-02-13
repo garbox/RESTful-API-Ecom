@@ -20,6 +20,7 @@ class ApiTokenFactory extends Factory
         return [
             'app_name' => $this->faker->name(),
             'api_token' => Str::random(25),            
+            'admin_token' => 1,            
         ];
     }
 }

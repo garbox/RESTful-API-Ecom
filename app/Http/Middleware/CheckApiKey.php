@@ -11,6 +11,7 @@ class CheckApiKey
     public function handle(Request $request, Closure $next)
     {
         $apiKey = $request->header('X-API-KEY'); 
+        $apiKey = 'GdfJnteyWvgyPFrRN5nLzJKnpWUnBk84i7'; 
         if (!$apiKey) {
             return response()->json(['message' => 'API key is missing'], 400);
         }

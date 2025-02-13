@@ -5,67 +5,67 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Str;
-use App\Models\ProductType;
+use App\Models\Category;
 use Tests\TestCase;
 
-class ProductTypeCrudTest extends TestCase
+class CategoryCrudTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
     public function it_can_create_an_product_type(){
 
-        $productType = [
+        $category = [
             'name' => Str::random(10),
         ];
 
-        $response = $this->postJson('/api/prodtype', $productType);
+        $response = $this->postJson('/api/category', $category);
 
         $response->assertStatus(201);
-        $this->assertDatabaseHas('product_types', [
-            'name' => $productType['name'],
+        $this->assertDatabaseHas('categories', [
+            'name' => $category['name'],
         ]);
     }
     
     /** @test */
     public function it_can_read_a_product_type(){
-        $productType = ProductType::factory()->create();
+        $category = Category::factory()->create();
         
-        $response = $this->getJson('/api/prodtype/' . $productType->id);
+        $response = $this->getJson('/api/category/' . $category->id);
         $response->assertStatus(200); 
-        $this->assertDatabaseHas('product_types', [
-            'id' => $productType->id,
+        $this->assertDatabaseHas('categories', [
+            'id' => $category->id,
         ]);
 
-        $response = $this->getJson('/api/prodtype/' . $productType->id+1);
+        $response = $this->getJson('/api/category/' . $category->id+1);
         $response->assertStatus(404); 
     }
 
     /** @test */
     public function it_can_update_a_product_type(){
-        $productType = ProductType::factory()->create();
+        $productType = Category::factory()->create();
 
         $updatedData = [
             'name' => Str::random(10), 
         ];
         
-        $response = $this->putJson('/api/prodtype/' . $productType->id, $updatedData);
+        $response = $this->putJson('/api/category/' . $category->id, $updatedData);
         $response->assertStatus(200);
-        $this->assertDatabaseHas('product_types', [
+        $this->assertDatabaseHas('categories', [
             'name' => $updatedData['name'],
         ]);
 
-        $response = $this->putJson('/api/prodtype/' . $productType->id+1, $updatedData);
+        $response = $this->putJson('/api/category/' . $category->id+1, $updatedData);
         $response->assertStatus(404);
     }
 
     /** @test */
     public function it_can_delete_a_product_type(){
-        $productType = ProductType::factory()->create();
+        $productType = category::factory()->create();
 
-        $response = $this->deleteJson('/api/prodtype/' . $productType->id);
+        $response = $this->deleteJson('/api/category/' . $productType->id);
         $response->assertStatus(200);
-        $this->assertDatabaseMissing('product_types', [
+        $this->assertDatabaseMissing('categories', [
             'id' => $productType->id,
         ]);
 

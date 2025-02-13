@@ -56,9 +56,9 @@ class OrderController extends Controller
             return response()->json(['error' => 'Order not found'], 404);
         }
 
-        $validatedData = $request->validate([
+        $validatedData = collect($request->validate([
             'total_price' => 'nullable|integer|min:255',
-        ]);
+        ]));
 
         $updatedData = array_filter($validatedData, function ($value) {
             return !is_null($value);

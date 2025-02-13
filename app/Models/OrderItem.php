@@ -13,10 +13,6 @@ class OrderItem extends Model
         'order_id', 'product_id', 'quantity'
     ];
 
-    public static function store(int $orderId, Request $request){
-        
-    }
-
     //--------relationship--------
     public function order(){
         return $this->belongsTo(Order::class);

@@ -6,7 +6,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\ProductTypeController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ShippingController;
 use App\Http\Controllers\StatusController;
 use App\Http\Controllers\UserController;
@@ -32,8 +32,8 @@ Route::resource('product', ProductController::class)->except(['create', 'edit'])
 
 Route::resource('photo', PhotoController::class)->except(['create', 'edit', 'update'])->middleware(CheckApiKey::class);
 
-Route::resource('prodtype', ProductTypeController::class)->middleware(CheckApiKey::class);
-Route::get("prodtype/{prodTypeId}/products", [ProductTypeController::class, 'products'])->middleware(CheckApiKey::class);
+Route::resource('category', CategoryController::class)->except(['create', 'edit', 'update'])->middleware(CheckApiKey::class);
+Route::get("category/{categoryId}/products", [CategoryController::class, 'products'])->middleware(CheckApiKey::class);
 Route::resource('shipping', ShippingController::class)->except(['create', 'edit'])->middleware(CheckApiKey::class);
 
 Route::get("user/{userId}/shipping", [UserController::class, 'getShippingInfo'])->middleware(CheckApiKey::class);

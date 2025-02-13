@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class ProductType extends Model
+class Category extends Model
 {
     use HasFactory;
 
@@ -15,8 +15,8 @@ class ProductType extends Model
         'name'
     ];
 
-    public static function getProducts(int $productTypeId){
-        $products = ProductType::with('products.productType')->find($productTypeId);
+    public static function getProducts(int $categoryId){
+        $products = Category::with('products.category')->find($categoryId);
 
         return $products;
     }

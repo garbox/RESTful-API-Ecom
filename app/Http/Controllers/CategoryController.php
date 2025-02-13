@@ -3,21 +3,21 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\ProductType;
+use App\Models\Category;
 
-class ProductTypeController extends Controller
+class CategoryController extends Controller
 {
     public function index(){
-        $productType = ProductType::all();
+        $category = Category::all();
 
-        if($productType->isEmpty()){
+        if($category->isEmpty()){
             return response()->json([
                 'message' => 'There are no product types.',
                 'product_type' => null,
             ], 200);
         }
 
-        return response()->json($productType,200);
+        return response()->json($category,200);
     }
 
     public function store(Request $request){
@@ -25,27 +25,27 @@ class ProductTypeController extends Controller
             'name' => 'required|string|max:255',
         ]);
     
-        $productType = ProductType::create($validatedData);
+        $category = Category::create($validatedData);
     
-        return response()->json($productType, 201);
+        return response()->json($category, 201);
     }
 
-    public function show(int $prodTypeId){
-        $prodType = ProductType::find($prodTypeId);
+    public function show(int $categoryId){
+        $categoryId = Category::find($prodTypeId);
 
-        if(!$prodType){
+        if(!$categoryId){
             return response()->json([
                 'message' => 'There are no product types with id provided.',
                 'product_type' => $prodType,
             ], 404);
         }
 
-        return response()->json($prodType,200);
+        return response()->json($categoryId,200);
     }
 
-    public function update(Request $request, int $productTypeId){
-        $productType = ProductType::find($productTypeId);
-        if (!$productType) {
+    public function update(Request $request, int $categoryId){
+        $category = Category::find($categoryId);
+        if (!$category) {
             return response()->json(['error' => 'Product not found'], 404);
         }
 
@@ -57,19 +57,19 @@ class ProductTypeController extends Controller
             return !is_null($value);
         });
 
-        $productType->update($updatedData->toArray());
+        $category->update($updatedData->toArray());
 
-        return response()->json($productType, 200);
+        return response()->json($category, 200);
     }
 
-    public function destroy(int $productTypeId){
-        $productType = ProductType::find($productTypeId);
+    public function destroy(int $categoryId){
+        $category = Category::find($categoryId);
 
-        if (!$productType) {
+        if (!$category) {
             return response()->json(['message' => 'Product type cannot be found.'], 404);
         }
         
-        if ($productType->delete()) {
+        if ($category->delete()) {
             return response()->json(['message' => 'Product type deleted successfully.'], 200);
         } 
         else {
@@ -77,25 +77,22 @@ class ProductTypeController extends Controller
         }
     }
 
-    public function products(int $prodTypeId){
-        $prodType = ProductType::find($prodTypeId);
+    public function products(int $categoryId){
+        $category = Category::find($categoryId);
 
-        if(!$prodType){
+        if(!$category){
             return response()->json([
-                'message' => 'Product type does not exsiste.',
-                'product_type' => null,
-                'products' => null,
+                'message' => 'Category does not exsiste.',
             ], 404);
         }
 
-        $products = ProductType::getProducts($prodTypeId);
-        if($products->products->isEmpty()){
+        $category = Category::getProducts($categoryId);
+        if($category->products->isEmpty()){
             return response()->json([
-                'message' => 'No products where found for this product type.',
-                'product_type' => null,
+                'message' => 'No products where found for this category.',
             ], 200);
         }
 
-        return response()->json($products,200);
+        return response()->json($category,200);
     }
 }
