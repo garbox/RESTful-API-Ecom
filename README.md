@@ -22,6 +22,8 @@ This is a Ecommerce API application ready out of the box (after instaliation).
 
     php artisan app:first-api-token   
 
+# API Endpoints 
+
 ## Get Users
 
 ### Request
