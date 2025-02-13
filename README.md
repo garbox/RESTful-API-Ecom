@@ -24,45 +24,88 @@ This is a Ecommerce API application ready out of the box (after instaliation).
 
 # API Endpoints 
 
-## Get Users
+## Get admins
 
-#### Request
+### Request
 
-`GET /user/`
+`GET /admin/`
 
-#### Response
-    json object with all users in following format
-    [
-        { 
-            "id": int, 
-            "name": string, 
-            "email": string, 
-            "email_verified_at": date, 
-            "created_at": date 
-        }
-        { 
-            "id": int, 
-            "name": string, 
-            "email": string, 
-            "email_verified_at": date, 
-            "created_at": date 
-        }
-    ]   
+### Response
+[
+    { 
+        "id": int, 
+        "name": string, 
+        "email": string, 
+        "role_id": int, 
+        "permissions": int, 
+        "created_at": date, 
+        "updated_at": date
+    }
+    { 
+        "id": int, 
+        "name": string, 
+        "email": string, 
+        "role_id": int, 
+        "permissions": int, 
+        "created_at": date, 
+        "updated_at": date 
+    }
+]   
 
-## Get single user
+## Get single admin
 
-#### Request
+### Request
 
-`GET /user/{user_id}`
+`GET /admin/{admin_id}`
 
-#### Response
-        json object with single user 
-        { 
-            "id": int, 
-            "name": string, 
-            "email": string, 
-            "email_verified_at": date, 
-            "created_at": date 
-        }
+### Response
+{ 
+    "id": int, 
+    "name": string, 
+    "email": string, 
+    "role_id": int, 
+    "permissions": int, 
+    "created_at": date, 
+    "updated_at": date
+}
 
 
+
+## Create an admin
+
+### Request
+
+`POST /admin
+{
+    name: string,
+    email: string,
+    role_id: int,
+    permissions: int
+}
+
+### Response
+{ 
+    "id": int, 
+    "name": string, 
+    "email": string, 
+    "role_id": int, 
+    "permissions": int, 
+    "created_at": date, 
+    "updated_at": date
+}
+
+## Delete an admin
+
+### Request
+
+`DELETE /admin/{admin_id}
+
+### Response
+404 
+'message' => 'Admin user cannot be found.'
+
+200
+'message' => 'Admin user deleted successfully.'
+
+500
+'message' => 'Failed to delete admin.'
