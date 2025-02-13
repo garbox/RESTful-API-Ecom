@@ -60,6 +60,7 @@ This is a Ecommerce API application ready out of the box (after instaliation).
 `GET /admin/{admin_id}`
 
 ### Response
+```
 { 
     "id": int, 
     "name": string, 
@@ -69,22 +70,24 @@ This is a Ecommerce API application ready out of the box (after instaliation).
     "created_at": date, 
     "updated_at": date
 }
-
-
+```
 
 ## Create an admin
 
 ### Request
 
 `POST /admin
+```
 {
     name: string,
     email: string,
     role_id: int,
     permissions: int
 }
+```
 
 ### Response
+```
 { 
     "id": int, 
     "name": string, 
@@ -94,6 +97,7 @@ This is a Ecommerce API application ready out of the box (after instaliation).
     "created_at": date, 
     "updated_at": date
 }
+```
 
 ## Delete an admin
 
@@ -102,6 +106,7 @@ This is a Ecommerce API application ready out of the box (after instaliation).
 `DELETE /admin/{admin_id}
 
 ### Response
+```
 404 
 'message' => 'Admin user cannot be found.'
 
@@ -110,3 +115,4 @@ This is a Ecommerce API application ready out of the box (after instaliation).
 
 500
 'message' => 'Failed to delete admin.'
+```
