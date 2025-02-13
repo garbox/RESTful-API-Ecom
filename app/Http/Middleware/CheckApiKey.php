@@ -10,15 +10,13 @@ class CheckApiKey
 {
     public function handle(Request $request, Closure $next)
     {
-        $apiKey = $request->header('X-API-KEY'); 
-        $apiKey = 'GdfJnteyWvgyPFrRN5nLzJKnpWUnBk84i7'; 
+        $apiKey = $request->header('GLOBAL-API-KEY'); 
+        
         if (!$apiKey) {
             return response()->json(['message' => 'API key is missing'], 400);
         }
 
-        $token = ApiToken::where('api_token', $apiKey)->first();
-
-        if (!$token) {
+        if (ApiToken::where('api_token', $apiKey)->first()) {
             return response()->json(['message' => 'Unauthorized or Invalid API Token'], 401);
         }
 
