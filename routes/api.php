@@ -14,31 +14,31 @@ use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\ApiTokenController;
 use App\Http\Middleware\CheckApiKey;
 
-Route::resource('admin', AdminController::class)->middleware(CheckApiKey::class);
-Route::post("token/update", [ApiTokenController::class, 'update'])->middleware(CheckApiKey::class);
-Route::resource('token', ApiTokenController::class)->middleware(CheckApiKey::class);
+Route::resource('admin', AdminController::class)->except(['create', 'edit'])->middleware(CheckApiKey::class);
+
+Route::resource('token', ApiTokenController::class)->except(['create', 'edit'])->middleware(CheckApiKey::class);
 
 Route::get("cart/session/{session_id}", [CartController::class, 'cartBySession'])->middleware(CheckApiKey::class);
 Route::get("cart/user/{user_id}", [CartController::class, 'cartByUser'])->middleware(CheckApiKey::class);
-Route::resource('cart', CartController::class)->middleware(CheckApiKey::class);
+Route::resource('cart', CartController::class)->except(['create', 'edit'])->middleware(CheckApiKey::class);
 
 Route::get("order/user/{user_id}", [OrderController::class, 'orderByUser'])->middleware(CheckApiKey::class);
-Route::resource('order', OrderController::class)->middleware(CheckApiKey::class);
+Route::resource('order', OrderController::class)->except(['create', 'edit'])->middleware(CheckApiKey::class);
 
 Route::get("product/featured", [ProductController::class, 'featured'])->middleware(CheckApiKey::class);
 Route::get("product/available", [ProductController::class, 'available'])->middleware(CheckApiKey::class);
 Route::get("product/search/{search}", [ProductController::class, 'search'])->middleware(CheckApiKey::class);
-Route::resource('product', ProductController::class)->middleware(CheckApiKey::class);
+Route::resource('product', ProductController::class)->except(['create', 'edit'])->middleware(CheckApiKey::class);
 
-Route::resource('photo', PhotoController::class)->middleware(CheckApiKey::class);
+Route::resource('photo', PhotoController::class)->except(['create', 'edit', 'update'])->middleware(CheckApiKey::class);
 
 Route::resource('prodtype', ProductTypeController::class)->middleware(CheckApiKey::class);
 Route::get("prodtype/{prodTypeId}/products", [ProductTypeController::class, 'products'])->middleware(CheckApiKey::class);
-Route::resource('shipping', ShippingController::class)->middleware(CheckApiKey::class);
+Route::resource('shipping', ShippingController::class)->except(['create', 'edit'])->middleware(CheckApiKey::class);
 
 Route::get("user/{userId}/shipping", [UserController::class, 'getShippingInfo'])->middleware(CheckApiKey::class);
 Route::get("user/{userId}/cart", [UserController::class, 'getCartInfo'])->middleware(CheckApiKey::class);
 Route::get("user/{userId}/totalSale", [UserController::class, 'totalSales'])->middleware(CheckApiKey::class);
 Route::get("user/{userId}/orders", [UserController::class, 'getOrders'])->middleware(CheckApiKey::class);
-Route::resource('user', UserController::class)->middleware(CheckApiKey::class);
+Route::resource('user', UserController::class)->except(['create', 'edit'])->middleware(CheckApiKey::class);
 
