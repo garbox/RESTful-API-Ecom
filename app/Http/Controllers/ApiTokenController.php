@@ -52,8 +52,11 @@ class ApiTokenController extends Controller
             'app_name' => 'nullable|string|max:255',
         ]);
 
-        $token->app_name = $validatedData['app_name'];
-        $token->save(); 
+        $updatedData = array_filter($validatedData, function ($value) {
+            return !is_null($value);
+        });
+    
+        $token->update($updatedData);
 
         return response()->json($token, 200);
     }

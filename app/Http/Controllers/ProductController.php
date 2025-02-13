@@ -53,7 +53,7 @@ class ProductController extends Controller
             return response()->json(['error' => 'Product not found'], 404);
         }
 
-        $validatedData = collect($request->validate([
+        $validatedData = $request->validate([
             'name' => 'nullable|string|max:255',
             'price' => 'nullable|numeric',
             'short_description' => 'nullable|string',
@@ -61,7 +61,7 @@ class ProductController extends Controller
             'product_type_id' => 'nullable|exists:product_types,id',
             'featured' => 'nullable|boolean',
             'available' => 'nullable|boolean',
-        ]));
+        ]);
 
         $updatedData = $validatedData->filter(function ($value) {
             return !is_null($value);
@@ -119,18 +119,5 @@ class ProductController extends Controller
         ->get();
 
         return response()->json($result, 200);
-    }
-    
-    //-------Not used but reponse needed --->
-    public function edit(){
-        return response()->json([
-            'message' => "Please use PUT PATCH api/product/*productId* to update admin info"
-        ],404);
-    }
-
-    public function create(){
-        return response()->json([
-            'message' => "Please use POST api/product with proper payload to create admin user"
-        ],404);
     }
 }

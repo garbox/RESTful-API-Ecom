@@ -44,30 +44,27 @@ class UserController extends Controller
         return response()->json(new UserResource($user),200);
     }
 
-    public function update(Request $request, int $userID){
+    public function update(Request $request, int $userID)
+    {
         $user = User::find($userID);
         if (!$user) {
             return response()->json(['message' => 'User not found'], 404);
         }
-
+    
         $validatedData = $request->validate([
             'name' => 'nullable|string|max:255',
             'email' => 'nullable|email|unique:users,email,' . $userID,
         ]);
-
-        // Update the name if it's provided
-        if (array_key_exists('name', $validatedData)) {
-            $user->name = $validatedData['name'];
-        }
-        
-        // Update the email if it's provided
-        if (array_key_exists('email', $validatedData)) {
-            $user->email = $validatedData['email'];
-        }
-        $user->save(); 
-
-        return response()->json(new UserResource($user), 200); // HTTP 200 OK
+    
+        $updatedData = array_filter($validatedData, function ($value) {
+            return !is_null($value);
+        });
+    
+        $user->update($updatedData);
+    
+        return response()->json(new UserResource($user), 200);
     }
+    
 
     public function destroy(int $userId){
         $user = User::find($userId);

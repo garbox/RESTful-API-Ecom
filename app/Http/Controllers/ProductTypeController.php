@@ -98,17 +98,4 @@ class ProductTypeController extends Controller
 
         return response()->json($products,200);
     }
-
-    //-------Not used but reponse needed --->
-    public function edit(){
-        return response()->json([
-            'message' => "Please use PUT PATCH api/prodtype/*prodtypeId* to update admin info",
-        ],404);
-    }
-
-    public function create(){
-        return response()->json([
-            'message' => "Please use POST api/prodtype with proper payload to create a cart item.",
-        ],404);
-    }
 }

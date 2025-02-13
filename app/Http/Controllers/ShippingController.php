@@ -88,19 +88,4 @@ class ShippingController extends Controller
             return response()->json(['message' => 'Failed to delete shipping info.'], 500);
         }
     }
-
-    //-------Not used but reponse needed --->
-    public function edit(){
-        return response()->json([
-            'message' => "Please use PUT PATCH api/shipping/*shippingId* to update shipping info"
-        ],404);
-    }
-
-    public function create(){
-        return response()->json([
-            'message' => "Please use POST api/shipping with proper payload to create shipping information"
-        ],404);
-    }
-
-
 }

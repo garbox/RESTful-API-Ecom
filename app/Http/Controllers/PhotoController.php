@@ -71,17 +71,4 @@ class PhotoController extends Controller
             return response()->json(['message' => 'Failed to delete photo.'], 500);
         }
     }
-
-    //-------Not used but reponse needed --->
-    public function edit(){
-        return response()->json([
-            'message' => "Please use PUT PATCH api/photo/{photoId} to update photo info"
-        ],404);
-    }
-
-    public function create(){
-        return response()->json([
-            'message' => "Please use POST api/photo with proper payload to uploade photo"
-        ],404);
-    }
 }

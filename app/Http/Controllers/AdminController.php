@@ -55,9 +55,11 @@ class AdminController extends Controller
             'email' => 'nullable|email|unique:users,email,' . $adminId,
         ]);
 
-        $admin->name = $validatedData['name'];
-        $admin->email = $validatedData['email'];
-        $admin->save(); 
+        $updatedData = array_filter($validatedData, function ($value) {
+            return !is_null($value);
+        });
+    
+        $admin->update($updatedData);
 
         return response()->json($admin, 200); // HTTP 200 OK
     }
@@ -75,18 +77,5 @@ class AdminController extends Controller
         else {
             return response()->json(['message' => 'Failed to delete admin.'], 500);
         }
-    }
-
-    //-------Not used but reponse needed --->
-    public function edit(){
-        return response()->json([
-            'message' => "Please use PUT PATCH api/admin/*adminID* to update admin info"
-        ],404);
-    }
-
-    public function create(){
-        return response()->json([
-            'message' => "Please use POST api/admin with proper payload to create admin user"
-        ],404);
     }
 }

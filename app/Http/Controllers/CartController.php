@@ -50,6 +50,7 @@ class CartController extends Controller
 
     public function update(Request $request, int $cartID){
         $cart = Cart::find($cartID);
+
         if (!$cart) {
             return response()->json(['error' => 'Cart not found'], 404);
         }
@@ -58,8 +59,11 @@ class CartController extends Controller
             'quantity' => 'nullable|integer',
         ]);
 
-        $cart->quantity = $validatedData['quantity'];
-        $cart->save(); 
+        $updatedData = array_filter($validatedData, function ($value) {
+            return !is_null($value);
+        });
+    
+        $cart->update($updatedData);
 
         return response()->json($cart, 200);
     }
@@ -111,18 +115,5 @@ class CartController extends Controller
         return response()->json([
             'user' =>$cart,
         ],200);
-    }
-    
-    //-------Not used but reponse needed --->
-    public function edit(){
-        return response()->json([
-            'message' => "Please use PUT PATCH api/cart/*cartID* to update admin info",
-        ],404);
-    }
-
-    public function create(){
-        return response()->json([
-            'message' => "Please use POST api/cart with proper payload to create a cart item.",
-        ],404);
     }
 }

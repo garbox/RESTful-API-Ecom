@@ -60,8 +60,11 @@ class OrderController extends Controller
             'total_price' => 'nullable|integer|min:255',
         ]);
 
-        $order->total_price = $validatedData['total_price'];
-        $order->save(); 
+        $updatedData = array_filter($validatedData, function ($value) {
+            return !is_null($value);
+        });
+    
+        $order->update($updatedData);
 
         return response()->json($order, 200); 
     }
@@ -89,25 +92,12 @@ class OrderController extends Controller
 
         $orders = Order::orderByUser($user);
 
-        if (!$orders) {
+        if ($orders['orders']->isEmpty()) {
             return response()->json([
                 'message' => 'No orders found for this user.',
             ], 404);
         }
 
         return response()->json($orders,200);
-    }
-
-    //-------Not used but reponse needed --->
-    public function edit(){
-        return response()->json([
-            'message' => "Please use PUT PATCH api/order/*orderID* to update admin info"
-        ], 404);
-    }
-
-    public function create(){
-        return response()->json([
-            'message' => "Please use POST api/order with proper payload to create a cart item."
-        ], 404);
     }
 }
