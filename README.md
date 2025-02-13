@@ -31,7 +31,8 @@ This is a Ecommerce API application ready out of the box (after instaliation).
 `GET /admin/`
 
 ### Response
-`[
+```
+[
     { 
         "id": int, 
         "name": string, 
@@ -51,7 +52,7 @@ This is a Ecommerce API application ready out of the box (after instaliation).
         "updated_at": date 
     }
 ]   
-
+```
 ## Get single admin
 
 ### Request
