@@ -31,6 +31,13 @@ This is a Ecommerce API application ready out of the box (after instaliation).
 `GET /user/`
 
 #### Response
+    { 
+        "id": int, 
+        "name": string, 
+        "email": string, 
+        "email_verified_at": date, 
+        "created_at": date 
+    }    
 
 
 ## Get single user
