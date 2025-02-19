@@ -42,9 +42,7 @@ Route::middleware(['token_check', 'user'])->group(function () {
     Route::get("user/cart", [UserController::class, 'getCartInfo']);
     Route::get("user/totalSale", [UserController::class, 'totalSales']);
     Route::get("user/orders", [UserController::class, 'getOrders']);
-    Route::get("cart/session/{session_id}", [CartController::class, 'cartBySession']);
     Route::get("cart/user/", [CartController::class, 'cartByUser']);
-    Route::resource('cart', CartController::class)->except(['create', 'edit']);
     Route::get("order/user/", [OrderController::class, 'orderByUser']);
     Route::resource('order', OrderController::class)->except(['create', 'edit']);
     Route::resource('shipping', ShippingController::class)->except(['create', 'edit']);
@@ -54,6 +52,10 @@ Route::middleware(['token_check', 'user'])->group(function () {
 Route::middleware('token_check')->group(function () {
     Route::post("user/login", [UserController::class, 'login']);
     Route::post("admin/login", [AdminController::class, 'login']);
+    Route::post("cart", [CartController::class, 'store']);
+    Route::get("cart/session/{session_id}", [CartController::class, 'cartBySession']);
+    Route::put("cart", [CartController::class, 'update']);
+    Route::delete("cart/{cart_id}", [CartController::class, 'destroy']);
     Route::post("user/", [UserController::class, 'store']);
     Route::get("product/featured", [ProductController::class, 'featured']);
     Route::get("product/available", [ProductController::class, 'available']);

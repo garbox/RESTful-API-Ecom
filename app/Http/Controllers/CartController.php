@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use App\Models\Cart;
 use App\Models\User;
 
@@ -26,8 +27,17 @@ class CartController extends Controller
             'product_id' => 'required|exists:products,id',
             'quantity' => 'required|integer|min:1',
             'user_id' => 'nullable|exists:users,id',
+            'session_id' => 'nullable|string',
         ]);
 
+        //session ID or API Key Check
+        if ($request->header('USER-API-KEY')) {
+            $validatedData['session_id'] = $request->header('USER-API-KEY');
+        } 
+        elseif(!$request['session_id']) {
+            $validatedData['session_id'] = Str::random(34);
+        } 
+        
         $cart = Cart::create($validatedData);
     
         return response()->json($cart, 201);
@@ -47,8 +57,8 @@ class CartController extends Controller
         ],200);
     }
 
-    public function update(Request $request, int $cartID){
-        $cart = Cart::find($cartID);
+    public function update(Request $request){
+        $cart = Cart::find($request->cart_id);
 
         if (!$cart) {
             return response()->json(['error' => 'Cart not found'], 404);
@@ -58,17 +68,17 @@ class CartController extends Controller
             'quantity' => 'nullable|integer',
         ]));
 
-        $updatedData = array_filter($validatedData, function ($value) {
+        $updatedData = $validatedData->filter(function (string $value, string $key) {
             return !is_null($value);
         });
     
-        $cart->update($updatedData);
+        $cart->update($updatedData->toArray());
 
         return response()->json($cart, 200);
     }
 
-    public function destroy(int $cartId){
-        $cart = Cart::find($cartId);
+    public function destroy(string $cart_id){
+        $cart = Cart::find($cart_id);
         if (!$cart) {
             return response()->json(['message' => 'Cart cannot be found.'], 404);
         }
@@ -81,8 +91,8 @@ class CartController extends Controller
         }
     }
 
-    public function cartBySession(string $sessionToken){
-        $cart = Cart::sessionCart($sessionToken);
+    public function cartBySession(string $session_id){
+        $cart = Cart::sessionCart($session_id);
         if($cart->isEmpty()){
             return response()->json([
                 'message' => 'Cart not found with session Id.'
@@ -90,7 +100,6 @@ class CartController extends Controller
         }
 
         return response()->json([
-            'session_id' => $sessionToken,
             'cart'=> $cart,
         ],200);
     }

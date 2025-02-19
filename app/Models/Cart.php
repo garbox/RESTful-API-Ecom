@@ -31,9 +31,9 @@ class Cart extends Model
         return $user;
     }
 
-    public static function sessionCart(string $sessionToken){
-        $cart =  Cart::with('product.category') // Eager load product and its product_type
-        ->where('session_id', $sessionToken)
+    public static function sessionCart(string $session_id){
+        $cart =  Cart::with('product.category')
+        ->where('session_id', $session_id)
         ->get();
 
         $cart->each(function($cartItem) {
