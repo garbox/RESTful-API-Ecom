@@ -6,25 +6,27 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Models\Admin;
+use App\Models\ApiToken;
 
 class AdminAccess
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     */
     public function handle(Request $request, Closure $next): Response
     {
-        $request->api_token = $request->header('ADMIN-API-KEY'); 
-        $admin = Admin::verifyToken($request->api_token);
+        $apiToken = $request->header('USER-API-KEY');
+        
+        if (!$apiToken) {
+            return response()->json(['message' => 'API token is required'], 400);
+        }
+    
+        $admin = ApiToken::verifyToken(Admin::class, $apiToken);
 
-        if(!$admin){
+        if (!$admin) {
             return response()->json(['message' => 'Admin API key is invalid'], 400);
         }
-
+    
         $request->merge(['authed_admin' => $admin]);
-
+    
         return $next($request);
     }
+    
 }
