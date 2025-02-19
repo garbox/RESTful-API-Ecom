@@ -14,7 +14,7 @@ class CartController extends Controller
         if($carts->isEmpty()){
             return response()->json([
                 'message' => 'There are no cart items.',
-            ], 404);
+            ], 201);
         }
         return response()->json([
             'carts' => $carts,
@@ -24,7 +24,6 @@ class CartController extends Controller
     public function store(Request $request){
         $validatedData = $request->validate([
             'product_id' => 'required|exists:products,id',
-            'session_id' => 'required|string',
             'quantity' => 'required|integer|min:1',
             'user_id' => 'nullable|exists:users,id',
         ]);
@@ -96,22 +95,17 @@ class CartController extends Controller
         ],200);
     }
 
-    public function cartByUser(int $cartId){
-        $user = User::find($cartId);
+    public function cartByUser(Request $request){
+        $user = User::find($request->authed_user->id);
 
-        if(!$user){
-            return response()->json([
-                'message' => "User not found",
-            ],200);
-        }
-
-        $cart = Cart::userCart($cartId);
+        $cart = Cart::userCart($user->id);
 
         if ($cart->carts->isEmpty()) {
             return response()->json([
-                'message' => 'Cart not found for the given user id.'
+                'message' => 'Cart not found for the given user.'
             ], 200); 
         }
         return response()->json($cart,200);
     }
 }
+
