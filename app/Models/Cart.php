@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Product;
+use App\Models\Category ;
 
 class Cart extends Model
 {
@@ -20,8 +21,8 @@ class Cart extends Model
         $user = User::with('carts.product')->find($userId);
 
         foreach ($user->carts as $cart) {
-            $cart->product['category'] = ProductType::find($cart->product['category_id']);
-            $cart->product->product_type->makeHidden('updated_at', 'created_at');
+            $cart->product['category'] = Category::find($cart->product['category_id']);
+            $cart->product->category->makeHidden('updated_at', 'created_at');
             $cart->product->makeHidden('short_description', 'long_description','created_at','updated_at','category_id');
             $cart->makeHidden('product_id', "user_id",'created_at','updated_at');
         }
@@ -36,7 +37,7 @@ class Cart extends Model
         ->get();
 
         $cart->each(function($cartItem) {
-            $cartItem->product->productType->makeHidden('updated_at', 'created_at');
+            $cartItem->product->category->makeHidden('updated_at', 'created_at');
             $cartItem->product->makeHidden('category_id','updated_at', 'created_at', 'short_description', 'long_description');
             $cartItem->makeHidden('product_id','updated_at', 'created_at');
         });

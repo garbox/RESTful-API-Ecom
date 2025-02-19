@@ -24,6 +24,15 @@ class Order extends Model
         ->makeHidden('password','remember_token', 'updated_at');
     }
 
+    // create order from pulling from cart based off user token (need more thought on this)
+    // get payment intent id from stripe 
+    // get total from stripe, 
+    // store cart into orderItems
+    //create order with total price and linked to user_id
+    //clear cart with user session token. 
+    public static function createOrder(){
+
+    }
     //------relationships
     public function orderitems(): HasMany{
         return $this->hasMany(OrderItem::class);
