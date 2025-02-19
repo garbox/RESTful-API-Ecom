@@ -14,6 +14,7 @@ return new class extends Migration
             $table->integer('role_id');
             $table->integer("permissions");
             $table->string('password');
+            $table->string('api_token');
             $table->timestamp('created_at')->useCurrent();    
             $table->timestamp('updated_at')->useCurrent();
         });

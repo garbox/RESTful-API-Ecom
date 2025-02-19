@@ -13,15 +13,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('carts', function (Blueprint $table) {
-            $table->id();
-            $table->foreignIdFor(User::class)->constrained()->onDelete('cascade');
-            $table->foreignIdFor(Product::class)->constrained()->onDelete('cascade');
-            $table->string('session_id');
-            $table->integer('quantity');
-            $table->timestamp('created_at')->useCurrent();    
-            $table->timestamp('updated_at')->useCurrent();
-        });
+            Schema::create('carts', function (Blueprint $table) {
+                $table->id();
+                $table->foreignIdFor(User::class)->constrained()->onDelete('cascade')->nullable();
+                $table->foreignIdFor(Product::class)->constrained()->onDelete('cascade');
+                $table->string('session_id');
+                $table->integer('quantity');
+                $table->timestamp('created_at')->useCurrent();    
+                $table->timestamp('updated_at')->useCurrent();
+            });
     }
 
     /**
