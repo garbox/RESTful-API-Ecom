@@ -26,14 +26,15 @@ class CartController extends Controller
         $validatedData = $request->validate([
             'product_id' => 'required|exists:products,id',
             'quantity' => 'required|integer|min:1',
-            'user_id' => 'nullable|exists:users,id',
             'session_id' => 'nullable|string',
         ]);
 
-        //session ID or API Key Check
+
         if ($request->header('USER-API-KEY')) {
             $validatedData['session_id'] = $request->header('USER-API-KEY');
+            $validatedData['user_id'] = $request['user_id'];
         } 
+
         elseif(!$request['session_id']) {
             $validatedData['session_id'] = Str::random(34);
         } 
@@ -43,42 +44,57 @@ class CartController extends Controller
         return response()->json($cart, 201);
     }
 
-    public function show(int $cartId){
-        $cart = Cart::with('product.category')->find($cartId);
+    public function show(Request $request){
+        $query = Cart::with('product.category');
 
-        if(!$cart){
+        if($request->header('session_id')){
+            $query->where('session_id', $request->header('session_id'));
+        }
+        elseif($request->authed_user){
+            $query->where('user_id', $request->authed_user->id);
+        }
+
+        $cart = $query->get();
+
+        if ($cart->isEmpty()) {
             return response()->json([
                 'message' => 'Cart not found'
-            ],404);
+            ], 404);
         }
         
         return response()->json([
             'cart' => $cart,
-        ],200);
+        ], 200);
     }
+    
 
     public function update(Request $request){
         $cart = Cart::find($request->cart_id);
 
         if (!$cart) {
-            return response()->json(['error' => 'Cart not found'], 404);
+            return response()->json(['message' => 'Cart not found'], 404);
         }
 
         $validatedData = collect($request->validate([
             'quantity' => 'nullable|integer',
         ]));
 
+        if($request->header('USER_API_KEY')){
+            $validatedData['session_id'] = $request->header('USER_API_KEY');
+        }
+
         $updatedData = $validatedData->filter(function (string $value, string $key) {
             return !is_null($value);
         });
-    
+        
         $cart->update($updatedData->toArray());
 
         return response()->json($cart, 200);
     }
-
-    public function destroy(string $cart_id){
-        $cart = Cart::find($cart_id);
+    
+    public function destroy(Request $request){
+        $cart = Cart::find($request->cart_id);
+        
         if (!$cart) {
             return response()->json(['message' => 'Cart cannot be found.'], 404);
         }

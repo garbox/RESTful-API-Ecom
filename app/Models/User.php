@@ -20,6 +20,10 @@ class User extends Authenticatable
         'name', 'email', 'password', 'address', 'city', 'state', 'zip', 'phone', 'api_token'
     ];
 
+    protected $hidden = [
+        'password', 'email_verified_at', 'created_at', 'updated_at', 'api_token'
+    ];
+    
     public static function totalSales(int $userId){
         return Order::where('user_id', $userId)->sum('total_price');
     }

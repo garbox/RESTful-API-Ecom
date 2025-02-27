@@ -4,9 +4,6 @@
     <!-- GET /order/{order} -->
     <li>GET /order/{order}</li>
 
-    <!-- GET /order/user/{user_id} -->
-    <li>GET /order/user/{user_id}</li>
-
     <!-- POST /order -->
     <li>POST /order</li>
 

@@ -18,6 +18,15 @@ class OrderCrudTest extends TestCase
     
     /** @test */
     public function it_can_create_an_order(){
+        //create user
+        //create prod types
+        //create prod
+        //create cart items
+        //create order from cart items
+        //get total price from cart items and 
+        // send to get payment intent id. 
+        //if working create order items from cart items, 
+        //create order with total price, user_id and stripe intent id. 
         $user = User::factory()->create();
 
         $orderData = [
@@ -26,7 +35,7 @@ class OrderCrudTest extends TestCase
             'stripe_payment_intent_id' => Str::random(25),
         ];
 
-        $response = $this->postJson('/api/order', $orderData);
+        $response = $this->postJson(route('order.create'), $orderData);
 
         $response->assertStatus(201);
         $this->assertDatabaseHas('orders', [

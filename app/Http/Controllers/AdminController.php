@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Resources\AdminResource;
-use Illuminate\Support\Facades\Log;
 
 class AdminController extends Controller
 {
@@ -44,7 +43,8 @@ class AdminController extends Controller
 
     public function show(Request $request){
         
-        $admin = Admin::find($request->authed_admin->id);
+        $admin = Admin::find($request->authed_user->id);
+        
         if(!$admin){
             return response()->json([
                 'message' => 'Admin user not found.'
@@ -58,22 +58,22 @@ class AdminController extends Controller
         
         $validatedData = collect($request->validate([
             'name' => 'nullable|string|max:255',
-            'email' => 'nullable|email|unique:users,email,' . $request->authed_admin->email,
+            'email' => 'nullable|email|unique:users,email,' . $request->authed_user->email,
         ]));
 
         $updatedData = $validatedData->filter(function (string $value, string $key) {
             return !is_null($value);
         });
         
-        $admin = Admin::find($request->authed_admin->id);
+        $admin = Admin::find($request->authed_user->id);
         $admin->update($updatedData->toArray());
 
         return response()->json(new AdminResource($admin), 200);
     }
 
     public function destroy(Request $request){
-        $admin = Admin::find($request->authed_admin->id);
-
+        $admin = Admin::find($request->authed_user->id);
+        
         if (!$admin) {
             return response()->json(['message' => 'Admin user cannot be found.'], 404);
         }

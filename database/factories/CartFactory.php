@@ -19,10 +19,14 @@ class CartFactory extends Factory
      */
     public function definition(): array
     {
+        $user =  User::inRandomOrder()->first();
+        $product = Product::inRandomOrder()->first();
         return [
-            'user_id' => User::inRandomOrder()->first()->id,
-            'product_id' => Product::inRandomOrder()->first()->id,
-            'session_id' => Str::random(25),
+            'user_id' => $user->id,
+            'product_id' => $product->id,
+            'quantity' => 5,
+            'session_id' => $user->api_token,
+            'price' => $product->price,
             'quantity' => 2,
         ];
     }

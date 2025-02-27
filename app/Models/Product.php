@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Http\Request;
 use App\Models\Category;
+use App\Models\OrderItem;
+use App\Models\Cart;
+use App\Models\Photo;
 
 class Product extends Model
 {
@@ -38,5 +41,9 @@ class Product extends Model
 
     public function photos(): HasMany{
         return $this->hasMany(Photo::class);
+    }
+
+    public function orderItems(): HasMany{
+        return $this->hasMany(OrderItem::class);
     }
 }

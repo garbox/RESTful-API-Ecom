@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Models\ApiToken;
 
+
 class ApiTokenController extends Controller
 {
 
@@ -34,7 +35,7 @@ class ApiTokenController extends Controller
     }
 
     public function show(string $apiToken){
-        $token = ApiToken::find($apiToken);
+        $token = ApiToken::where('api_token', $apiToken)->first();
 
         if(!$token){
             return response()->json([
@@ -46,23 +47,23 @@ class ApiTokenController extends Controller
     }
 
     public function update(Request $request){
-        $token = ApiToken::where('api_token', $request->header('X-API-KEY'))->first();
-
+        $token = ApiToken::find($request['id'])->first();
+        
         $validatedData = collect($request->validate([
             'app_name' => 'nullable|string|max:255',
         ]));
 
-        $updatedData = array_filter($validatedData, function ($value) {
+        $updatedData = $validatedData->filter(function (string $value, string $key) {
             return !is_null($value);
         });
     
-        $token->update($updatedData);
+        $token->update($updatedData->toArray());
 
         return response()->json($token, 200);
     }
 
-    public function destroy(int $apiToken){
-        $token = ApiToken::find($apiToken);
+    public function destroy(Request $request){
+        $token = ApiToken::find($request['id']);
 
         if (!$token) {
             return response()->json(['message' => 'API token cannot be found.'], 404);

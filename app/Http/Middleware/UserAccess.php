@@ -18,13 +18,16 @@ class UserAccess
             return response()->json(['message' => 'API token is required'], 400);
         }
     
-        $admin = ApiToken::verifyToken(User::class, $apiToken);  // Assuming verifyToken is checking the correct table
+        $user = ApiToken::verifyToken(User::class, $apiToken);
     
         if (!$admin) {
-            return response()->json(['message' => 'Admin API key is invalid'], 400);
+            return response()->json(['message' => 'User API key is invalid'], 400);
         }
     
-        $request->merge(['authed_user' => $admin]);
+        $request->merge([
+            'authed_user' => $user, 
+            'typeOfUser' => 'user'
+        ]);
     
         return $next($request);
     }

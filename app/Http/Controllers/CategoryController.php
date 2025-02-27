@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Category;
+use Illuminate\Support\Facades\Log;
 
 class CategoryController extends Controller
 {
@@ -31,16 +32,16 @@ class CategoryController extends Controller
     }
 
     public function show(int $categoryId){
-        $categoryId = Category::find($prodTypeId);
+        $category = Category::find($categoryId);
 
-        if(!$categoryId){
+        if(!$category){
             return response()->json([
                 'message' => 'There are no product types with id provided.',
-                'product_type' => $prodType,
+                'product_type' => $category,
             ], 404);
         }
 
-        return response()->json($categoryId,200);
+        return response()->json($category,200);
     }
 
     public function update(Request $request, int $categoryId){
@@ -63,8 +64,9 @@ class CategoryController extends Controller
     }
 
     public function destroy(int $categoryId){
+        Log::alert($categoryId);
         $category = Category::find($categoryId);
-
+        Log::alert($category);
         if (!$category) {
             return response()->json(['message' => 'Product type cannot be found.'], 404);
         }

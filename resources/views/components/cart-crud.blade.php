@@ -103,10 +103,10 @@
                     </div>
                   </li>
 
-                  <!-- PUT api/cart/{cart_id} -->
+                  <!-- PUT api/cart -->
                   <li>
                     <span data-toggle="collapse" href="#cartUpdate" role="button" aria-expanded="false" aria-controls="cartUpdate" style="cursor: pointer;">
-                      PUT api/cart/{cart_id}
+                      PUT api/cart
                     </span>
                     <div class="collapse codeAera" id="cartUpdate">
                     <code>

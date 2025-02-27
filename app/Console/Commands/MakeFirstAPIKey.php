@@ -22,19 +22,18 @@ class MakeFirstAPIKey extends Command
      */
     public function handle()
     {
-        $existingToken = ApiToken::first(); // Get the first token record from the database
+        $existingToken = ApiToken::pluck('api_token')->first();
         
         if ($existingToken) {
             $this->line('');
             $this->line('API token already exists:');
-            $this->info($existingToken->api_token);
+            $this->info($existingToken);
             $this->line(""); 
         } 
         else {
-            $name = $this->ask('What is going to use this key');
             $token = [
-                'app_name' => $name,
-                'api_token' => Str::random(34), // Generate a new API token
+                'app_name' => "Main",
+                'api_token' => Str::random(34),
                 'admin_token' => true,
             ];
             $apiToken = ApiToken::create($token);

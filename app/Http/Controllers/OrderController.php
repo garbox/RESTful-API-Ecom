@@ -5,12 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\User;
-use App\Models\Shipping;
+use App\Models\Cart;
 
 class OrderController extends Controller
 {
     public function index(){
-        // Eager load shipping details with orders and debug the query
         $orders = Order::with('user.shipping')->get();
 
         if ($orders->isEmpty()) {
@@ -23,19 +22,26 @@ class OrderController extends Controller
             $order->user->shipping->makeHidden('user_id')->makeHidden('order_id');
             $order->user->makeHidden('password', 'remember_token');
         }
+        
         return response()->json($orders,200);
     }
 
     public function store(Request $request){
         $validatedData = $request->validate([
             'stripe_payment_intent_id' => 'required|string|max:255',
-            'user_id' => 'required|integer|exists:users,id',
-            'total_price' => 'required|integer|min:1',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'phone' => 'required|phone|max:255',
+            'address' => 'required|string|max:255',
+            'zip' => 'required|string|max:255',
+            'city' => 'required|string|max:255',
+            'state' => 'required|string|max:255',
         ]);
-    
-        $user = Order::create($validatedData);
-    
-        return response()->json($user, 201);
+
+        $order = Order::createOrder($request);
+        
+        // if there is an error it should be handled via app.php 
+        return response()->json($order, 201);        
     }
 
     public function show(int $cartId){
@@ -84,8 +90,10 @@ class OrderController extends Controller
         }
     }
 
-    public function orderByUser(int $userId){
-        $user = User::find($userId);
+    public function orderByUser(Request $request, ?int $user_id){
+        $user = User::where("api_token", $request->header("USER_API_KEY"))
+                ->orWhere('id', $user_id)->first();
+
         if(!$user){
             return response()->json(['message' => 'No user found'], 404);
         }

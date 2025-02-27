@@ -39,8 +39,12 @@
   </style>
 </head>
 <body>
-
   <div class="container my-5">
+  <div class="row">
+  <p><b>App API Key:</b> {{$appToken->api_token}}</p>
+  <p><b>Admin API Key:</b> {{$adminToken->api_token}}</p>
+  <p><b>User API Key:</b> {{$userToken->api_token}}</p>
+</div>
     <div class="row">
 
       <!-- Left Column (API URL List) -->
@@ -53,385 +57,37 @@
             <div class="col-md-6">
 
               <!-- Admin -->
-              <h5 data-toggle="collapse" href="#adminMain" role="button" aria-expanded="false" aria-controls="adminMain" style="cursor: pointer;">Admin</h5>
-                <ul class="collapse" id="adminMain">
-                  <li>
-                    <span data-toggle="collapse" href="#adminLogin" role="button" aria-expanded="false" aria-controls="adminLogin" style="cursor: pointer;">
-                      POST api/admin/login
-                    </span>
-
-                    <div class="collapse codeAera" id="adminLogin" >
-                    <code>
-                      <p>REQUEST:<br>json</p>
-                      headers: {<br>
-                        "GLOBAL-API-KEY" : string,<br>
-                        "USER_API_KEY": string<br>
-                      }<br>
-                      body: {<br>
-                        "email": string, <br>
-                        "password": string <br>
-                      }
-                      <hr>
-                      <p>RESPONSE:<br>json</p>
-                      {<br>
-                        'id' : integer,<br>
-                        'name' : string,<br>
-                        'email' : string,<br>
-                        'api_token' : string<br>
-                      }
-                    </code>
-                    </div>
-                  </li>
-                  <li>
-                    <span data-toggle="collapse" href="#adminGET" role="button" aria-expanded="false" aria-controls="adminGET" style="cursor: pointer;">
-                      GET api/admin
-                    </span>
-                    <div class="collapse codeAera" id="adminGET">
-                    <code>
-                    <p>REQUEST:<br>json</p>
-                      headers: {<br>
-                        "GLOBAL-API-KEY" : string,<br>
-                        "USER_API_KEY": string<br>
-                      }
-                      <hr>
-                      <p>RESPONSE:<br>json</p>
-                      {<br>
-                        'id' : integer,<br>
-                        'name' : string,<br>
-                        'email' : string,<br>
-                        'api_token' : string<br>
-                      }
-                    </code>
-                    </div>
-                  </li>
-                  <li>
-                    <span data-toggle="collapse" href="#adminGETId" role="button" aria-expanded="false" aria-controls="adminGETId" style="cursor: pointer;">
-                      GET api/admin/all
-                    </span>
-                    <div class="collapse codeAera" id="adminGETId">
-                    <code>
-                      <p>REQUEST:<br>json</p>
-                      headers: {<br>
-                        "GLOBAL-API-KEY" : string,<br>
-                        "USER_API_KEY": string<br>
-                      }
-                      <hr>
-                      <p>RESPONSE:<br> array</p>
-                      [{<br>
-                        'id' : integer,<br>
-                        'name' : string,<br>
-                        'email' : string,<br>
-                        'api_token' : string<br>
-                      }]
-                    </code>
-                    </div>
-                  </li>
-                  <li>
-                    <span data-toggle="collapse" href="#adminPOST" role="button" aria-expanded="false" aria-controls="adminPOST" style="cursor: pointer;">
-                      POST api/admin
-                    </span>
-                    <div class="collapse codeAera" id="adminPOST">
-                    <code>
-                      <p>REQUEST:<br>json</p>
-                      headers: {<br>
-                        "GLOBAL-API-KEY" : string,<br>
-                        "USER_API_KEY": string<br>
-                      }<br>
-                      body: {<br>
-                        "name": string, <br>
-                        "email": string, <br>
-                        "role_id": int, <br>
-                        "permissions": int, <br>
-                        "password": string, <br>
-                        "password_confirmation": string<br>
-                      }
-                      <hr>
-                      <p>RESPONSE:<br> json</p>
-                      {<br>
-                        'id' : integer,<br>
-                        'name' : string,<br>
-                        'email' : string,<br>
-                        'api_token' : string<br>
-                      }
-                    </code>
-                    </div>
-                  </li>
-                  <li>
-                    <span data-toggle="collapse" href="#adminPUT" role="button" aria-expanded="false" aria-controls="adminPUT" style="cursor: pointer;">
-                      PUT api/admin/
-                    </span>
-                    <div class="collapse codeAera" id="adminPUT">
-                      <p>To update admim information</p>
-                      <code>
-                        headers: {<br>
-                          "GLOBAL-API-KEY" : string,<br>
-                          "USER_API_KEY": string<br>
-                        }<br>
-                        body: {<br>
-                          "name": string,<br>
-                          "email": string, <br>
-                        }
-                      </code>
-                    </div>
-                  </li>
-                  <li>
-                    <span data-toggle="collapse" href="#adminDELETE" role="button" aria-expanded="false" aria-controls="adminDELETE" style="cursor: pointer;">
-                      DELETE api/admin/
-                    </span>
-                    <div class="collapse codeAera" id="adminDELETE">
-                      <code>
-                        headers: {<br>
-                          "GLOBAL-API-KEY" : string,<br>
-                          "USER_API_KEY": string<br>
-                        }
-                      </code>
-                    </div>
-                  </li>
-                  <li>
-                    <span data-toggle="collapse" href="#adminCartAll" role="button" aria-expanded="false" aria-controls="adminCartAll" style="cursor: pointer;">
-                      GET api/admin/cart/all
-                    </span>
-                    <div class="collapse codeAera" id="adminCartAll">
-                      <code>
-                        headers: {<br>
-                          "GLOBAL-API-KEY" : string,<br>
-                          "USER_API_KEY": string<br>
-                        }
-                      </code>
-                    </div>
-                  </li>
-                </ul>
+              <x-AdminCrud/>
 
               <!-- Cart -->
-              <h5 data-toggle="collapse" href="#cartMain" role="button" aria-expanded="false" aria-controls="cartMain" style="cursor: pointer;">Cart</h5>
-                <ul class="collapse" id="cartMain">
-                  
-                  <li>
-                    <span data-toggle="collapse" href="#cartSession" role="button" aria-expanded="false" aria-controls="cartSession" style="cursor: pointer;">
-                      GET api/cart/session/{session_id}
-                    </span>
-                    <div class="collapse codeAera" id="cartSession">
-                      <code>
-                        <p>REQUEST:<br>json</p>
-                        headers: {<br>
-                          "GLOBAL-API-KEY" : string,<br>
-                          "USER_API_KEY": string<br>
-                        }<br>
-                        body:{<br>
-                          "session_id" : string<br>
-                        }                      <hr>
-                        <p>RESPONSE:<br> json</p>
-                        {<br>
-                          "id" : integer,<br>
-                          "user_id" : id|nullable,<br>
-                          "product_id" : id,<br>
-                          "session_id" : string,<br>
-                          "quantity" : int<br>
-                        }<br><br>
-                        user_id will be null untill an accound has been created. 
-                      </code>
-                    </div>
-                  </li>
-                  <li>
-                    <span data-toggle="collapse" href="#cartUser" role="button" aria-expanded="false" aria-controls="cartUser" style="cursor: pointer;">
-                      GET api/cart/user
-                    </span>
-                    <div class="collapse codeAera" id="cartUser">
-                      <code>
-                        <p>REQUEST:<br>json</p>
-                        headers: {<br>
-                          "GLOBAL-API-KEY" : string,<br>
-                          "USER_API_KEY": string<br>
-                        }<br>
-                        <hr>
-                        <p>RESPONSE:<br> json</p>
-                        {<br>
-                        "id":2,<br>
-                        "name": string,<br>
-                        "email": string,<br>
-                        "address": string,<br>
-                        "city": string,<br>
-                        "state": string,<br>
-                        "zip": int,<br>
-                        "api_token": string,<br>
-                        <b>"carts"</b>: array[<br></span> 
-                          "id": int,<br> 
-                          "session_id": string,<br> 
-                          "quantity": int,<br> 
-                          <b>"product"</b>:{<br> 
-                              "id": int,<br> 
-                              "name": string,<br> 
-                              "price": int,<br> 
-                              "featured": int,<br> 
-                              "available": int,<br> 
-                              "category":{<br> 
-                                "id": int,<br> 
-                                "name": string <br> 
-                              }<br>]<br>}<br>}
-                      </code>
-                    </div>
-                  </li>
-                  <li>
-                    <span data-toggle="collapse" href="#adminPOST" role="button" aria-expanded="false" aria-controls="adminPOST" style="cursor: pointer;">
-                      POST api/cart
-                    </span>
-                    <div class="collapse codeAera" id="adminPOST">
-                    <code>
-                      <p>REQUEST:<br>json</p>
-                      headers: {<br>
-                        "GLOBAL-API-KEY" : string,<br>
-                        "USER_API_KEY": string<br>
-                      }<br>
-                      body:{<br>
-                          "product_id" : int,<br>
-                          "quantity" : int,<br>
-                          "session_id" : string|nullable<br>
-                      }<br><br>
-                      if no session_id provided, one will be created and returned to client side.
-
-                      <hr>
-                      <p>RESPONSE:<br> json</p>
-                      {<br>
-                        'id' : integer,<br>
-                        'user_id' : id|nullable,<br>
-                        'product_id' : id,<br>
-                        'session_id' : string<br>
-                        'quantity' : int<br>
-                      }<br><br>
-                      user_id will be null untill an account has been created. 
-                    </code>
-                    </div>
-                  </li>
-                  <li>
-                    <span data-toggle="collapse" href="#cartUpdate" role="button" aria-expanded="false" aria-controls="cartUpdate" style="cursor: pointer;">
-                      PUT api/cart/{cart_id}
-                    </span>
-                    <div class="collapse codeAera" id="cartUpdate">
-                    <code>
-                      <p>REQUEST:<br>json</p>
-                      headers: {<br>
-                        "GLOBAL-API-KEY" : string,<br>
-                        "USER_API_KEY": string<br>
-                      }<br>
-                      body:{<br>
-                          "cart_id" : int,<br>
-                          "quantity" : int,<br>
-                      }                      <hr>
-                      <p>RESPONSE:<br> json</p>
-                      {<br>
-                        'id' : integer,<br>
-                        'user_id' : id|nullable,<br>
-                        'product_id' : id,<br>
-                        'session_id' : string<br>
-                        'quantity' : int<br>
-                      }<br><br>
-                      user_id will be null untill an accound has been created. 
-                    </code>
-                    </div>
-                  </li>
-                  <li>
-                    <span data-toggle="collapse" href="#cartDelete" role="button" aria-expanded="false" aria-controls="cartDelete" style="cursor: pointer;">
-                      DELETE api/cart/{cart_id}
-                    </span>
-                    <div class="collapse codeAera" id="cartDelete">
-                    <code>
-                      <p>REQUEST:<br>json</p>
-                      headers: {<br>
-                        "GLOBAL-API-KEY" : string,<br>
-                        "USER_API_KEY": string<br>
-                      }<br>
-                      <hr>
-                      <p>RESPONSE:<br> json</p>
-                      {<br>
-                        "message" => 'Cart has been deleted successfully.'
-                      }
-                    </code>
-                    </div>
-                  </li>
-                
-                </ul>
+              <x-CartCrud/>
               
               <!-- Order -->
-              <h5 data-toggle="collapse" href="#orderMain" role="button" aria-expanded="false" aria-controls="orderMain" style="cursor: pointer;">Order</h5>
-                <ul class="collapse" id="orderMain">
-                  <li>GET /order</li>
-                  <li>GET /order/{order}</li>
-                  <li>GET /order/user/{user_id}</li>
-                  <li>POST /order</li>
-                  <li>PUT /order/{order_id}</li>
-                  <li>DELETE /order/{order_id}</li>
-                </ul>
+              <x-OrderCrud/>
 
-              <!-- PRoduct Type -->
-              <h5 data-toggle="collapse" href="#prodTypeMain" role="button" aria-expanded="false" aria-controls="prodTypeMain" style="cursor: pointer;">Product Type</h5>
-                  <ul class="collapse" id="prodTypeMain">
-                    <li>GET /prodType</li>
-                    <li>GET /prodType/{prodType_id}</li>
-                    <li>GET /prodtype/{prodTypeId}/products</li>
-                    <li>PUT /prodType/{prodType_id}</li>
-                    <li>POST /prodType</li>
-                    <li>DELETE /prodType/{prodType_id}</li>
-                  </ul>
+              <!-- Category  -->
+              <x-CategoryCrud/>
               
               <!-- Photo -->
-              <h5 data-toggle="collapse" href="#photoMain" role="button" aria-expanded="false" aria-controls="photoMain" style="cursor: pointer;">Photo</h5>
-                <ul class="collapse" id="photoMain">
-                  <li>GET /photo</li>
-                  <li>GET /photo/{photo_id}</li>
-                  <li>POST /photo</li>
-                  <li>DELETE /photo/{photo_id}</li>
-                </ul>
+              <x-PhotoCrud/>
+
             </div>
 
             <!-- Column 2 -->
             <div class="col-md-6">
+
               <!-- Product -->
-              <h5 data-toggle="collapse" href="#productMain" role="button" aria-expanded="false" aria-controls="productMain" style="cursor: pointer;">Product</h5>
-                <ul class="collapse" id="productMain">
-                    <li>GET /product</li>
-                    <li>GET /product/{product_id}</li>
-                    <li>GET /product/search/{search}</li>
-                    <li>GET /product/available</li>
-                    <li>GET /product/featured</li>
-                    <li>GET /product/{productId}/productType</li>
-                    <li>POST /product</li>
-                    <li>PUT /product/{product_id}</li>
-                    <li>DELETE /product/{product_id}</li>
-                </ul>
+              <x-ProductCrud/>
 
               <!-- Shipping -->
-              <h5 data-toggle="collapse" href="#shippingMain" role="button" aria-expanded="false" aria-controls="shippingMain" style="cursor: pointer;">Shipping</h5>
-                <ul class="collapse" id="shippingMain">
-                  <li>GET /shipping</li>
-                  <li>GET /shipping/{shipping_id}</li>
-                  <li>POST /shipping</li>
-                  <li>PUT /shipping/{shipping_id}</li>
-                  <li>DELETE /shipping/{shipping_id}</li>
-                </ul>
+              <x-ShippingCrud/>
               
               <!-- API Token -->
-              <h5 data-toggle="collapse" href="#ApiTokenMain" role="button" aria-expanded="false" aria-controls="ApiTokenMain" style="cursor: pointer;">API Token</h5>
-                <ul class="collapse" id="ApiTokenMain">
-                  <li>GET /token</li>
-                  <li>GET /token/{token}</li>
-                  <li>POST /token</li>
-                  <li>PUT /token/{token}</li>
-                  <li>DELETE /token/{token}</li>
-                </ul>
+              <x-TokenCrud/>
                 
               <!-- User -->
-              <h5 data-toggle="collapse" href="#userMain" role="button" aria-expanded="false" aria-controls="userMain" style="cursor: pointer;">User</h5>
-                <ul class="collapse" id="userMain">
-                  <li>GET /user</li>
-                  <li>GET /user/{user_id}</li>
-                  <li>GET /user/{user_id}/cart</li>
-                  <li>GET /user/{user_id}/orders</li>
-                  <li>GET /user/{user_id}/shipping</li>
-                  <li>GET /user/{user_id}/totalSale</li>
-                  <li>POST /user</li>
-                  <li>PUT /user/{user_id}</li>
-                  <li>DELETE /user/{user_id}</li>
-                </ul>
+              <x-UserCrud/>
+
             </div>
 
           </div>

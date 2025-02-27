@@ -21,7 +21,10 @@ class UserController extends Controller
                 'message' => 'There is no user information avaliable.',
             ], 404);
         }
-        return response()->json(UserResource::collection($user), 201);
+
+        $user->makeHidden(['address', 'zip', 'state', 'city']);
+        
+        return response()->json($user, 201);
     }
 
     public function store(Request $request){
@@ -40,11 +43,11 @@ class UserController extends Controller
 
         $user = User::create($validatedData);
 
-        return response()->json(new UserResource($user), 201);
+        return response()->json($user, 201);
     }
 
     public function show(Request $request){
-        return response()->json(new UserResource($request->authed_user),200);
+        return response()->json($request->authed_user,200);
     }
 
     public function update(Request $request){
@@ -65,7 +68,7 @@ class UserController extends Controller
     
         $user->update($updatedData);
     
-        return response()->json(new UserResource($user), 200);
+        return response()->json($user, 200);
     }
 
     public function destroy(Request $request){
@@ -181,8 +184,8 @@ class UserController extends Controller
     
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
-    
-            return response()->json(new UserResource($user),200);
+            $user->makeVisible('api_token');
+            return response()->json($user,200);
         }
     
         return response()->json([
