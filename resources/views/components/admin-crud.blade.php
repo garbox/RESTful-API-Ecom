@@ -257,7 +257,7 @@
         <!-- DELETE api/admin/ -->
         <li>
             <span data-toggle="collapse" href="#adminDELETE" role="button" aria-expanded="false" aria-controls="adminDELETE" style="cursor: pointer;">
-            DELETE {{parse_url(route('admin.destory'),PHP_URL_PATH)}}
+            DELETE {{parse_url(route('admin.destroy'),PHP_URL_PATH)}}
             </span>
             <div class="collapse codeAera" id="adminDELETE">
                 <code>
