@@ -15,10 +15,8 @@ class AdminController extends Controller
     public function index(){
         $admins = Admin::all();
 
-        if($admins->isEmpty()){
-            return response()->json([
-                'message' => 'There are no admins.',
-            ], 404);
+        if ($admins->isEmpty()) {
+            return response()->json(['message' => 'There are no admins.'], 404);
         }
         $admins->makeHidden(['password', 'api_token']);
         return response()->json($admins, 201);

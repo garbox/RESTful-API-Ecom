@@ -8,19 +8,20 @@ use Symfony\Component\HttpFoundation\Response;
 use App\Models\User;
 use App\Models\ApiToken;
 
+
 class UserAccess
 {
     public function handle(Request $request, Closure $next): Response
     {
-        $apiToken = $request->header('USER-API-KEY');
-        
+        $apiToken = $request->header('USER_API_KEY');
+
         if (!$apiToken) {
-            return response()->json(['message' => 'API token is required'], 400);
+            return response()->json(['message' => 'User API token is required'], 400);
         }
-    
+
         $user = ApiToken::verifyToken(User::class, $apiToken);
-    
-        if (!$admin) {
+
+        if (!$user) {
             return response()->json(['message' => 'User API key is invalid'], 400);
         }
     
@@ -31,4 +32,5 @@ class UserAccess
     
         return $next($request);
     }
+    
 }

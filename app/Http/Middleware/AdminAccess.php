@@ -13,16 +13,16 @@ class AdminAccess
 {
     public function handle(Request $request, Closure $next): Response
     {
-        $apiToken = $request->header('USER-API-KEY');
+        $apiToken = $request->header('USER_API_KEY');
 
         if (!$apiToken) {
-            return response()->json(['message' => 'User API token is required'], 400);
+            return response()->json(['message' => 'Admin API token is required'], 400);
         }
 
         $admin = ApiToken::verifyToken(Admin::class, $apiToken);
         
         if (!$admin) {
-            return response()->json(['message' => 'Admin API key is invalid'], 400);
+            return response()->json(['message' => 'Admin API token is invalid'], 400);
         }
     
         $request->merge([
