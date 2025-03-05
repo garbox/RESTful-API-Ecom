@@ -4,10 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Laravel\Cashier\Billable;
 use App\Models\Order;
 use App\Models\Cart;
 use App\Models\Shipping;
@@ -15,6 +14,7 @@ use App\Models\Shipping;
 class User extends Authenticatable
 {
     use HasFactory;
+    use Billable;
 
     protected $fillable = [
         'name', 'email', 'password', 'address', 'city', 'state', 'zip', 'phone', 'api_token'
@@ -33,15 +33,15 @@ class User extends Authenticatable
     }
 
     //-----relationships----
-    public function orders(){
+    public function orders(): HasMany{
         return $this->hasMany(Order::class);
     }
     
-    public function carts(){
+    public function carts(): HasMany{
         return $this->hasMany(Cart::class);
     }
 
-    public function shipping(){
+    public function shipping(): HasMany{
         return $this->hasMany(Shipping::class);
     }
 }

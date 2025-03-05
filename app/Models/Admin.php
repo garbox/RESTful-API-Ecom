@@ -11,7 +11,11 @@ class Admin extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'email', 'password', 'role_id', 'permissions', "password", "api_token"
+        'name', 'email', 'password', 'role_id', 'permissions', "api_token"
+    ];
+
+    protected $hidden = [
+        'name', 'email', 'role_id', 'permissions', "api_token"
     ];
     
     public static function verifyCredentials(array $credentials){

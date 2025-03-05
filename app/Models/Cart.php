@@ -7,7 +7,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Product;
-use App\Models\Category ;
+use App\Models\Category;
+use Illuminate\Support\Facades\Log;
 
 class Cart extends Model
 {
@@ -19,16 +20,16 @@ class Cart extends Model
 
     public static function userCart(int $userId){
         $user = User::with('carts.product')->find($userId);
-
+        
         foreach ($user->carts as $cart) {
             $cart->product['category'] = Category::find($cart->product['category_id']);
             $cart->product->category->makeHidden('updated_at', 'created_at');
             $cart->product->makeHidden('short_description', 'long_description','created_at','updated_at','category_id');
             $cart->makeHidden('product_id', "user_id",'created_at','updated_at');
         }
-
+        
         $user->makeHidden('password','email_verified_at','remember_token','created_at','updated_at');
-        return $user;
+        return $user->carts;
     }
 
     public static function sessionCart(string $session_id){
