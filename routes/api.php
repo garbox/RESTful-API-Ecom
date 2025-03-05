@@ -29,15 +29,15 @@ Route::middleware(['token_check', 'admin'])->group(function () {
     Route::get("order/all", [OrderController::class, 'index'])->name('order.all');
     Route::get("order/{order_id}", [OrderController::class, 'show'])->name('admin.orders.show');
     Route::get("order/user/{user_id}", [OrderController::class, 'orderByUser'])->name('admin.order.user');
-    Route::delete("order/{order_id}", [OrderController::class, 'destory'])->name('order.destory');
+    Route::delete("order/{order_id}", [OrderController::class, 'destroy'])->name('order.destory');
     Route::post("product/", [ProductController::class, 'store'])->name('product.create');
     Route::put("product/{product_id}", [ProductController::class, 'update'])->name('product.update');
     Route::delete("product/{product_id}", [ProductController::class, 'destory'])->name('product.destory');
-    Route::delete("photo/{photo_id}", [PhotoController::class, 'destory'])->name('photo.destory');
     Route::get("user/all", [UserController::class, 'index'])->name('user.all');
     Route::put("token", [ApiTokenController::class, 'update'])->name('token.update');
     Route::delete("token", [ApiTokenController::class, 'destroy'])->name('token.destroy');
     Route::resource('token', ApiTokenController::class)->except(['create', 'edit', 'update','destroy']);
+    Route::resource('photo', PhotoController::class)->except(['create', 'edit']);
 });
 
 //User Routes
@@ -52,7 +52,7 @@ Route::middleware(['token_check', 'user'])->group(function () {
     Route::get("cart/user/", [CartController::class, 'cartByUser'])->name('cart.user');
     Route::get("order/user/", [OrderController::class, 'orderByUser'])->name('order.user');
     Route::put("order", [OrderController::class, 'update'])->name('order.update');
-    Route::put("order", [OrderController::class, 'store'])->name('order.create');
+    Route::post("order", [OrderController::class, 'store'])->name('order.create');
     Route::resource('shipping', ShippingController::class)->except(['create', 'edit']);
 });
 
@@ -69,7 +69,7 @@ Route::middleware('token_check')->group(function () {
     Route::get("product/available", [ProductController::class, 'available'])->name('product.avaliable');
     Route::get("product/{productId}", [ProductController::class, 'available'])->name('product.show');
     Route::get("product/search/{search}", [ProductController::class, 'search'])->name('product.search');
-    Route::resource('photo', PhotoController::class)->except(['create', 'edit', 'update', 'index']);
+
 });
 
 
