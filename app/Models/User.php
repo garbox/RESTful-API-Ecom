@@ -21,7 +21,7 @@ class User extends Authenticatable
     ];
 
     protected $hidden = [
-        'password', 'email_verified_at', 'created_at', 'updated_at', 'api_token'
+        'password', 'email_verified_at', 'created_at', 'updated_at', 'stripe_id', 'pm_type', 'pm_last_four', 'trial_ends_at'
     ];
     
     public static function totalSales(int $userId){
