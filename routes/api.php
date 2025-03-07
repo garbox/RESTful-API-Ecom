@@ -36,9 +36,7 @@ Route::middleware(['token_check', 'admin'])->group(function () {
     Route::get("user/all", [UserController::class, 'index'])->name('user.all');
     
     Route::put("token", [ApiTokenController::class, 'update'])->name('token.update');
-
     Route::delete("token", [ApiTokenController::class, 'destroy'])->name('token.destroy');
-
     Route::resource('token', ApiTokenController::class)->except(['create', 'edit', 'update','destroy']);
 
     Route::resource('photo', PhotoController::class)->except(['create', 'edit', 'update']);
