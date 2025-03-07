@@ -1,32 +1,45 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Http\Resources\UserResource;
+
 use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-
-
+use Dedoc\Scramble\Attributes\HeaderParameter;
 use App\Models\User;
+use App\Http\Resources\UserResource;
+use App\Http\Resources\CartResource;
+use App\Http\Resources\OrderResource;
 
 class UserController extends Controller
 {
-
+    /**
+     * Show all users
+     * 
+     * @response User[]
+     */ 
+    #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
+    #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
     public function index(){
-        $user = User::all();
-        if($user->isEmpty()){
+        $users = User::all();
+        if ($users->isEmpty()) {
             return response()->json([
-                'message' => 'There is no user information avaliable.',
+                'message' => 'There is no user information available.',
             ], 404);
         }
 
-        $user->makeHidden(['address', 'zip', 'state', 'city']);
-        
-        return response()->json($user, 201);
+        return UserResource::collection($users);
     }
 
+    /**
+     * Create a new user
+     * 
+     * @response User
+     */ 
+    #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
+    #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
     public function store(Request $request){
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
@@ -43,129 +56,152 @@ class UserController extends Controller
 
         $user = User::create($validatedData);
 
-        return response()->json($user, 201);
+        return new UserResource($user);
     }
 
+    /**
+     * Show a user
+     * 
+     * @response User
+     */ 
+    #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
+    #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
     public function show(Request $request){
-        return response()->json($request->authed_user,200);
+        return new UserResource($request->authed_user);
     }
 
-    public function update(Request $request){
+    /**
+     * Update a user
+     * 
+     * @response User
+     */ 
+    #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
+    #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
+    public function update(Request $request)
+    {
         $user = User::find($request->authed_user->id);
 
-        $validatedData = collect($request->validate([
+        $validatedData = $request->validate([
             'name' => 'nullable|string|max:255',
             'email' => 'nullable|email|unique:users,email,' . $request->authed_user->id,
             'address' => 'nullable|string',
             'city' => 'nullable|string',
             'state' => 'nullable|string',
             'zip' => 'nullable|string',
-        ]));
+        ]);
 
-        $updatedData = array_filter($validatedData, function ($value) {
-            return !is_null($value);
-        });
-    
-        $user->update($updatedData);
-    
-        return response()->json($user, 200);
+        $user->update(array_filter($validatedData));
+
+        return new UserResource($user);
     }
 
+    /**
+     * Delete a user
+     * 
+     * @response User
+     */ 
+    #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
+    #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
     public function destroy(Request $request){
         $user = User::find($request->authed_user->id);
-
-        $validatedData = collect($request->validate([
-            'api_token' => 'required|string|max:34',
-        ]));
 
         if (!$user) {
             return response()->json(['message' => 'User cannot be found.'], 404);
         }
-        
-        if ($user->delete()) {
-            return response()->json(['message' => 'User deleted successfully.'], 200);
-        } 
-        else {
-            return response()->json(['message' => 'Failed to delete user.'], 500);
-        }
+
+        $user->delete();
+
+        return response()->json(['message' => 'User deleted successfully.'], 200);
     }
 
+    /**
+     * Get all orders for a user
+     * 
+     * @response Order[]
+     */ 
+    #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
+    #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
     public function getOrders(Request $request){
-        $orders = User::with('orders.shipping')->find($request->authed_user->id);
+        $user = User::with('orders.shipping')->find($request->authed_user->id);
 
-        if(!$orders){
+        if (!$user) {
             return response()->json([
                 'message' => "User not found",
             ], 404);
         }
 
-        if($orders->orders->isEmpty()){
+        if ($user->orders->isEmpty()) {
             return response()->json([
                 'message' => "User has no orders",
             ], 404);
         }
 
-        foreach($orders->orders as $order){
-            $order->shipping->makeHidden('user_id', 'order_id', 'updated_at');
-            $order->makeHidden('user_id','updated_at');
-        }
-
-        $orders->makeHidden('password','remember_token', 'email_verified_at');
-        return response()->json($orders, 200);
+        return OrderResource::collection($user->orders);
     }
 
+    /**
+     * Get shipping information for a user
+     * 
+     * @response Shipping[]
+     */ 
+    #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
+    #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
     public function getShippingInfo(Request $request){
-        $userOrders = User::with('shipping')->withOut('orders')->find($request->authed_user->id);
+        $user = User::with('shipping')->find($request->authed_user->id);
 
-        if(!$userOrders){
+        if (!$user) {
             return response()->json([
-                'message' => "User cant not be found",
+                'message' => "User cannot be found",
             ], 404);
         }
 
-        if($userOrders->orders->isEmpty()){
+        if ($user->shipping->isEmpty()) {
             return response()->json([
-                'message' => "User has no orders",
+                'message' => "User has no shipping information",
             ], 404);
         }
-        
-        foreach($userOrders->shipping as $shipping){
-            $shipping->makeHidden('user_id','created_at','updated_at');
-        }
 
-        $userOrders->makeHidden('password','remember_token', 'email_verified_at','orders',);
-        
-        return response()->json($userOrders,200);
+        return ShippingResource::collection($user->shipping);
     }
 
+    /**
+     * Get cart information for a user
+     * 
+     * @response Cart[]
+     */ 
+    #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
+    #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
     public function getCartInfo(Request $request){
-        $userCart = User::with('carts.product')->find($request->authed_user->id);
-        
-        if(!$userCart){
+        $user = User::with('carts.product')->find($request->authed_user->id);
+
+        if (!$user) {
             return response()->json([
-                'message' => "User can not be found",
+                'message' => "User cannot be found",
             ], 404);
         }
 
-        if($userCart->carts->isEmpty()){
+        if ($user->carts->isEmpty()) {
             return response()->json([
                 'message' => "User cart is empty",
             ], 404);
         }
-        
-        foreach($userCart->carts as $cart){
-            $cart->makeHidden('product_id','user_id','created_at','updated_at');
-        }
 
-        $userCart->makeHidden('password','remember_token', 'email_verified_at','orders',);
-        
-        return response()->json($userCart, 200);
+        return CartResource::collection($user->carts);
     }
 
+    /**
+     * Show total sales for a user
+     * 
+     * @response {
+     *   "total": 1000
+     * }
+     */ 
+    #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
+    #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
     public function totalSales(Request $request){
         $user = User::find($request->authed_user->id);
 
-        if(!$user){
+        if (!$user) {
             return response()->json([
                 'message' => 'User not found',
             ], 404);
@@ -173,21 +209,27 @@ class UserController extends Controller
 
         return response()->json([
             'total' => User::totalSales($user->id),
-        ],200);
+        ], 200);
     }
 
+    /**
+     * User login
+     * 
+     * @response User
+     */ 
+    #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
+    #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
     public function login(LoginRequest $request){
         $credentials = $request->validate([
-            'email' => 'required'|'email',
+            'email' => 'required|email',
             'password' => 'required',
         ]);
-    
+
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
-            $user->makeVisible('api_token');
-            return response()->json($user,200);
+            return new UserResource($user);
         }
-    
+
         return response()->json([
             'error' => 'Invalid credentials'
         ], 401);

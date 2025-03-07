@@ -4,9 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Photo;
+use Dedoc\Scramble\Attributes\HeaderParameter;
 
 class PhotoController extends Controller
 {
+    /**
+     * Get all photos
+     * 
+     * @response Photo[]
+     * 
+     */ 
+   #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
+   #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
     public function index(){
         $photos = Photo::all();
     
@@ -20,6 +29,14 @@ class PhotoController extends Controller
         return response()->json($photos, 200);
     }
 
+    /**
+     * Store a new photo/photos
+     * 
+     * @response Photo[]
+     * 
+     */ 
+   #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
+   #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
     public function store(Request $request){
         $validatedData = $request->validate([
             'product_id' => 'required|integer|exists:products,id',
@@ -29,22 +46,24 @@ class PhotoController extends Controller
     
         $filePaths = [];
         if ($request->hasFile('file_name')) {
-            foreach ($request->file('file_name') as $file) {
-                $filePaths[] = $file->store('photos');  // Ensure files are stored in 'photos/'
-            }
+            $filePaths = array_map(fn($file) => $file->store('photos'), $request->file('file_name'));
         }
     
-        $photos = [];
-        foreach ($filePaths as $filePath) {
-            $photos[] = Photo::create([
-                'product_id' => $validatedData['product_id'],
-                'file_name' => $filePath,
-            ]);
-        }
+        $photos = array_map(fn($filePath) => Photo::create([
+            'product_id' => $validatedData['product_id'],
+            'file_name' => $filePath,
+        ]), $filePaths);
     
         return response()->json($photos, 201);
     }
     
+    /**
+     * Show a photo.
+     * 
+     * @response Photo
+     * 
+     */ 
+   #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
     public function show(int $photoId){
         $photo = Photo::find($photoId);
 
@@ -57,18 +76,23 @@ class PhotoController extends Controller
         return response()->json($photo,200);
     }
 
+    /**
+     * Destroy a photo.
+     * 
+     * @response Photo
+     * 
+     */ 
+    #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
+    #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
     public function destroy(int $photoId){
         $photo = Photo::find($photoId);
-
+    
         if (!$photo) {
             return response()->json(['message' => 'Photo cannot be found.'], 404);
         }
-        
-        if ($photo->delete()) {
-            return response()->json(['message' => 'Photo deleted successfully.'], 200);
-        } 
-        else {
-            return response()->json(['message' => 'Failed to delete photo.'], 500);
-        }
+    
+        $photo->delete();
+    
+        return response()->json(['message' => 'Photo deleted successfully.'], 200);
     }
 }

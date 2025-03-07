@@ -4,11 +4,20 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use Dedoc\Scramble\Attributes\HeaderParameter;
+use App\Http\Resources\ProductResource;
 
 class ProductController extends Controller
 {
+    /**
+     * Show all products
+     * 
+     *
+     */ 
+    #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
+    #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
     public function index(){
-        $products = Product::with('category')->get();
+        $products = Product::with('category.photos')->get();
     
         if ($products->isEmpty()) {
             return response()->json([
@@ -17,9 +26,16 @@ class ProductController extends Controller
             ], 404);
         }
     
-        return response()->json($products, 200);
+        return ProductResource::collection($products);
     }
 
+    /**
+     * Create a product
+     * 
+     * @response Product
+     */ 
+    #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
+    #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
     public function store(Request $request){
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
@@ -36,16 +52,28 @@ class ProductController extends Controller
         return response()->json($product, 201);
     }
 
+    /**
+     * Show a product
+     * 
+     * 
+     */ 
+    #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
     public function show(int $productId){
         $product = Product::with('category','photos')->find($productId);
 
         if(!$product){
-            return response()->json($product, 404);
+            return response()->json(['message' => 'Product not found'], 404);
         }
 
-        return response()->json($product,200);
+        return ProductResource::collection($product);
     }
 
+    /**
+     * Update a product
+     * 
+     * @response Product
+     */ 
+    #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
     public function update(Request $request, int $productId){
         $product = Product::find($productId);
 
@@ -72,6 +100,12 @@ class ProductController extends Controller
         return response()->json($product, 200); // HTTP 200 OK
     }
 
+    /**
+     * Delete a product
+     * 
+     * 
+     */ 
+    #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
     public function destroy(int $productId){
         $product = Product::find($productId);
 
@@ -87,8 +121,13 @@ class ProductController extends Controller
         }
     }
 
+    /**
+     * Show all featured products
+     * 
+     */ 
+    #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
     public function featured(){
-        $products = Product::featured()->get();
+        $products = Product::featured()->with('category', 'photos')->get();
 
         if ($products->isEmpty()) {
             return response()->json([
@@ -96,27 +135,37 @@ class ProductController extends Controller
             ], 404);
         }
 
-        return response()->json($products, 200);
-
+        return ProductResource::collection($products);
     }
 
+    /**
+     * Show all products that are available
+     * 
+     *
+     */ 
+    #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
     public function available(){
-        $products = Product::available()->get();
+        $products = Product::available()->with('category', 'photos')->get();
 
         if ($products->isEmpty()) {
             return response()->json([
-                'message' => 'There are no products avaliable for the customer at the moment.',
+                'message' => 'There are no products featured at the moment.',
             ], 404);
         }
 
-        return response()->json($products, 200);
-
+        return ProductResource::collection($products);
     }
 
+    /**
+     * Search for products
+     * 
+     * 
+     */ 
+    #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
     public function search(string $search){
-        $result = Product::where('name','LIKE','%'.$search.'%')
+        $result = Product::where('name','LIKE','%'.$search.'%')->with('category', 'photos')
         ->get();
 
-        return response()->json($result, 200);
+        return ProductResource::collection($result);
     }
 }
