@@ -10,7 +10,11 @@ class ApiToken extends Model
     use HasFactory;
 
     protected $fillable = [
-        'app_name', 'api_token', 'admin_token'
+        'app_name', 'api_token'
+    ];
+
+    protected $hidden = [
+        'created_at', 'updated_at'
     ];
 
     public static function verifyToken(string $model, ?string $token)
