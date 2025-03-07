@@ -15,7 +15,7 @@ class Admin extends Model
     ];
 
     protected $hidden = [
-        'name', 'email', 'role_id', 'permissions', "api_token"
+        'permissions', 'password', 'created_at', 'updated_at'
     ];
     
     public static function verifyCredentials(array $credentials){
