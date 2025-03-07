@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('api_token');
             $table->string('app_name'); 
-            $table->boolean('admin_token')->default(false); 
             $table->timestamp('created_at')->useCurrent();    
             $table->timestamp('updated_at')->useCurrent();
         });
