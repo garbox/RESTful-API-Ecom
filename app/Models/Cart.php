@@ -37,12 +37,6 @@ class Cart extends Model
         ->where('session_id', $session_id)
         ->get();
 
-        $cart->each(function($cartItem) {
-            $cartItem->product->category->makeHidden('updated_at', 'created_at');
-            $cartItem->product->makeHidden('category_id','updated_at', 'created_at', 'short_description', 'long_description');
-            $cartItem->makeHidden('product_id','updated_at', 'created_at');
-        });
-
         return $cart;
     }
 
