@@ -265,6 +265,11 @@
                 "GLOBAL-API-KEY" : string,<br>
                 "USER_API_KEY": string<br>
                 }
+                <hr>
+                <p>RESPONSE:<br>json</p>
+                {<br>
+                    'message' : 'Admin deleted successfully'<br>
+                }
                 </code>
             </div>
         </li>
