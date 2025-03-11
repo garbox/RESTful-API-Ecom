@@ -31,15 +31,18 @@ Route::middleware(['token_check', 'admin'])->group(function () {
 
     Route::post("product/", [ProductController::class, 'store'])->name('product.create');
     Route::put("product/{product_id}", [ProductController::class, 'update'])->name('product.update');
-    Route::delete("product/{product_id}", [ProductController::class, 'destroy'])->name('product.destory');
+    Route::delete("product/{product_id}", [ProductController::class, 'destroy'])->name('product.destroy');
     Route::get("product", [ProductController::class, 'index'])->name('product.all');
     Route::get("user/all", [UserController::class, 'index'])->name('user.all');
     
+    Route::put("token/all", [ApiTokenController::class, 'index'])->name('token.all');
     Route::put("token", [ApiTokenController::class, 'update'])->name('token.update');
     Route::delete("token", [ApiTokenController::class, 'destroy'])->name('token.destroy');
-    Route::resource('token', ApiTokenController::class)->except(['create', 'edit', 'update','destroy']);
+    Route::resource('token', ApiTokenController::class)->except(['create', 'edit', 'update','destroy','index']);
 
     Route::resource('photo', PhotoController::class)->except(['create', 'edit', 'update']);
+
+    Route::get("shipping", [ShippingController::class, 'index'])->name('shipping.all');
 });
 
 //User Routes
@@ -55,7 +58,7 @@ Route::middleware(['token_check', 'user'])->group(function () {
     Route::get("order/user/", [OrderController::class, 'orderByUser'])->name('order.user');
     Route::put("order", [OrderController::class, 'update'])->name('order.update');
     Route::post("order", [OrderController::class, 'store'])->name('order.create');
-    Route::resource('shipping', ShippingController::class)->except(['create', 'edit']);
+    Route::resource('shipping', ShippingController::class)->except(['create', 'edit', 'index']);
 });
 
 //Global Routes
