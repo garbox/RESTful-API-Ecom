@@ -9,8 +9,10 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Dedoc\Scramble\Attributes\HeaderParameter;
 use App\Models\User;
+use App\Models\Cart;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\CartResource;
+use App\Http\Resources\ShippingResource;
 use App\Http\Resources\OrderResource;
 
 class UserController extends Controller
@@ -77,8 +79,7 @@ class UserController extends Controller
      */ 
     #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
     #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
-    public function update(Request $request)
-    {
+    public function update(Request $request){
         $user = User::find($request->authed_user->id);
 
         $validatedData = $request->validate([
@@ -98,7 +99,6 @@ class UserController extends Controller
     /**
      * Delete a user
      * 
-     * @response User
      */ 
     #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
     #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
@@ -117,7 +117,6 @@ class UserController extends Controller
     /**
      * Get all orders for a user
      * 
-     * @response Order[]
      */ 
     #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
     #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
@@ -142,7 +141,6 @@ class UserController extends Controller
     /**
      * Get shipping information for a user
      * 
-     * @response Shipping[]
      */ 
     #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
     #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
@@ -167,7 +165,6 @@ class UserController extends Controller
     /**
      * Get cart information for a user
      * 
-     * @response Cart[]
      */ 
     #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
     #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
@@ -175,15 +172,11 @@ class UserController extends Controller
         $user = User::with('carts.product')->find($request->authed_user->id);
 
         if (!$user) {
-            return response()->json([
-                'message' => "User cannot be found",
-            ], 404);
+            return response()->json(['message' => 'User cannot be found'], 404);
         }
 
         if ($user->carts->isEmpty()) {
-            return response()->json([
-                'message' => "User cart is empty",
-            ], 404);
+            return response()->json(['message' => 'User cart is empty'], 404);
         }
 
         return CartResource::collection($user->carts);
@@ -192,9 +185,6 @@ class UserController extends Controller
     /**
      * Show total sales for a user
      * 
-     * @response {
-     *   "total": 1000
-     * }
      */ 
     #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
     #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
@@ -220,18 +210,13 @@ class UserController extends Controller
     #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
     #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
     public function login(LoginRequest $request){
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
+        $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
-            return new UserResource($user);
+            return response()->json($user, 201);
         }
 
-        return response()->json([
-            'error' => 'Invalid credentials'
-        ], 401);
+        return response()->json(['error' => 'Invalid credentials'], 401);
     }
 }

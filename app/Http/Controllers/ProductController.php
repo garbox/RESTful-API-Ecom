@@ -16,8 +16,9 @@ class ProductController extends Controller
      */ 
     #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
     #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
-    public function index(){
-        $products = Product::with('category.photos')->get();
+    public function index()
+    {
+        $products = Product::with('category', 'photos')->get();
     
         if ($products->isEmpty()) {
             return response()->json([
@@ -65,7 +66,7 @@ class ProductController extends Controller
             return response()->json(['message' => 'Product not found'], 404);
         }
 
-        return ProductResource::collection($product);
+        return new ProductResource($product);
     }
 
     /**

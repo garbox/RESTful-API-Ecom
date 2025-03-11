@@ -90,21 +90,19 @@ class ApiTokenController extends Controller
     /**
      * Delete an API token.
      * 
-     * @response ApiToken[]
+     * 
      */ 
     #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
     #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
-    public function destroy($id){
+    public function destroy(int $id){
         $token = ApiToken::find($id);
-
+    
         if (!$token) {
-            return response()->json(['message' => 'API token cannot be found.'], 404);
+            return response()->json(['message' => 'Application token cannot be found.'], 404);
         }
-
-        if ($token->delete()) {
-            return response()->json(['message' => 'API token deleted successfully.'], 200);
-        } else {
-            return response()->json(['message' => 'Failed to delete API token.'], 500);
-        }
+    
+        $token->delete();
+    
+        return response()->json(['message' => 'Application token deleted successfully.'], 200);
     }
 }
