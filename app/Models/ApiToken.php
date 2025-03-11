@@ -17,9 +17,7 @@ class ApiToken extends Model
         'created_at', 'updated_at'
     ];
 
-    public static function verifyToken(string $model, ?string $token)
-    {   
-        
+    public static function verifyToken(string $model, ?string $token){   
         return $model::where('api_token', $token)->first();
     }
 }
