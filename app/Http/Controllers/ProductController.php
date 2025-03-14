@@ -38,19 +38,20 @@ class ProductController extends Controller
     #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
     #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
     public function store(Request $request){
+
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'price' => 'required|numeric',
+            'price' => 'required|numeric|min:1',
             'short_description' => 'required|string',
             'long_description' => 'nullable|string',
-            'product_type_id' => 'required|exists:product_types,id',
+            'category_id' => 'required|integer|exists:categories,id',
             'featured' => 'required|boolean',
             'available' => 'nullable|boolean',
         ]);
-    
+        
         $product = Product::create($validatedData);
     
-        return response()->json($product, 201);
+        return response()->json($product, 200);
     }
 
     /**
