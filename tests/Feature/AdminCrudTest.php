@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use App\Models\Admin;
 use App\Models\ApiToken;
@@ -40,7 +39,7 @@ class AdminCrudTest extends TestCase
         ];
     
         $response = $this->postJson(route('admin.create'), $adminData, $headers);
-        Log::info('Create response:', $response->json());
+
         $response->assertStatus(201);
     
         $this->assertDatabaseHas('admins', [
