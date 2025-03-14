@@ -43,8 +43,8 @@ class CartController extends Controller
             'user_id' => 'nullable|exists:users,id',
         ]);
 
-        $validatedData['price'] = Product::price($validatedData['product_id']);
-        
+        $validatedData['price'] = Product::price($request->input('product_id'));
+
         if ($request->header('USER_API_KEY')) {
             $user = User::where('api_token', $request->header('USER_API_KEY'))->first();
             $validatedData['user_id'] = $user->id;
