@@ -71,8 +71,8 @@ class ApiTokenController extends Controller
      */ 
     #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
     #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
-    public function update(Request $request, $id){
-        $token = ApiToken::find($id);
+    public function update(Request $request){
+        $token = ApiToken::find($request->id);
 
         if (!$token) {
             return response()->json(['message' => 'API token not found.'], 404);
@@ -94,8 +94,8 @@ class ApiTokenController extends Controller
      */ 
     #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
     #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
-    public function destroy(int $id){
-        $token = ApiToken::find($id);
+    public function destroy(Request $request){
+        $token = ApiToken::find($request->id);
     
         if (!$token) {
             return response()->json(['message' => 'Application token cannot be found.'], 404);
