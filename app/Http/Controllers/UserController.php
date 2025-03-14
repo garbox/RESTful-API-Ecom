@@ -49,7 +49,7 @@ class UserController extends Controller
             'address' => 'required|string',
             'state' => 'required|string',
             'city' => 'required|string',
-            'zip' => 'required|string',
+            'zip' => 'required|integer',
             'password' => 'required|string|confirmed|min:8',
         ]);
 
