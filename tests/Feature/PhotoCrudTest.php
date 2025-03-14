@@ -3,12 +3,14 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Photo;
 use App\Models\Product;
-use App\Models\ProductType;
+use App\Models\ApiToken;
+use App\Models\Category;
+use App\Models\Admin;
 use Tests\TestCase;
 
 class PhotoCrudTest extends TestCase
@@ -18,8 +20,17 @@ class PhotoCrudTest extends TestCase
     /** @test */
     public function it_can_create_multiple_photos(){
         Storage::fake('public');
-        ProductType::factory()->create();
+        Category::factory()->create();
         $product = Product::factory()->create();
+
+        Artisan::call('app:admin-api-token');
+        $token = ApiToken::pluck('api_token')->first();
+        $admin = Admin::factory()->create();
+
+        $headers = [
+            'GLOBAL_API_KEY' => $token,
+            "USER_API_KEY" => $admin->api_token
+        ];
 
         $photoFiles = [
             UploadedFile::fake()->image('photo1.jpg'),
@@ -31,7 +42,7 @@ class PhotoCrudTest extends TestCase
             'file_name' => $photoFiles,
         ];
 
-        $response = $this->postJson('/api/photo', $photoData);
+        $response = $this->postJson(route('photo.store'), $photoData, $headers);
 
         $response->assertStatus(201);
 
@@ -42,12 +53,20 @@ class PhotoCrudTest extends TestCase
 
     /** @test */
     public function it_can_read_a_photo(){
-        ProductType::factory()->create();
+        Category::factory()->create();
         Product::factory()->create();
         $photo = Photo::factory()->create();
+        Artisan::call('app:admin-api-token');
+        $token = ApiToken::pluck('api_token')->first();
+        $admin = Admin::factory()->create();
+
+        $headers = [
+            'GLOBAL_API_KEY' => $token,
+            "USER_API_KEY" => $admin->api_token
+        ];
 
         // Fetch the user using GET request
-        $response = $this->getJson('/api/photo/' . $photo->id);
+        $response = $this->getJson(route('photo.show', $photo->id), $headers);
 
         // Assert the response is successful
         $response->assertStatus(200); // 200 OK
@@ -58,12 +77,20 @@ class PhotoCrudTest extends TestCase
 
     /** @test */
     public function it_can_delete_a_photo(){
-        ProductType::factory()->create();
+        Artisan::call('app:admin-api-token');
+        Category::factory()->create();
         Product::factory()->create();
         $photo = Photo::factory()->create();
+        $token = ApiToken::pluck('api_token')->first();
+        $admin = Admin::factory()->create();
+
+        $headers = [
+            'GLOBAL_API_KEY' => $token,
+            "USER_API_KEY" => $admin->api_token
+        ];
 
         // Delete the user using DELETE request
-        $response = $this->deleteJson('/api/photo/' . $photo->id);
+        $response = $this->deleteJson(route('photo.destroy', $photo->id),[], $headers);
 
         // Assert the response is successful
         $response->assertStatus(200); // 200 OK
