@@ -20,14 +20,16 @@ Route::middleware(['token_check', 'admin'])->group(function () {
     Route::delete("admin/", [AdminController::class, 'destroy'])->name('admin.destroy');
     
     Route::get("cart/all", [CartController::class, 'index'])->name('cart.all');
-
+    Route::get("cart/get/{cart_id}", [CartController::class, 'index'])->name('cart.get');
+    
     Route::resource('category', CategoryController::class)->except(['create', 'edit']);
     Route::get("category/{categoryId}/products", [CategoryController::class, 'products'])->name('category.products');
 
     Route::get("order/all", [OrderController::class, 'index'])->name('order.all');
     Route::get("order/{order_id}", [OrderController::class, 'show'])->name('admin.orders.show');
-    Route::get("order/user/{user_id}", [OrderController::class, 'orderByUser'])->name('admin.order.user');
-    Route::delete("order/{order_id}", [OrderController::class, 'destroy'])->name('order.destory');
+    Route::delete("order/{order_id}", [OrderController::class, 'destroy'])->name('order.destroy');
+    Route::get("order/user/{user_id}", [OrderController::class, 'orderByUser'])->name('order.user');
+    Route::put("order/{order_id}", [OrderController::class, 'update'])->name('order.update');
 
     Route::post("product/", [ProductController::class, 'store'])->name('product.create');
     Route::put("product/{product_id}", [ProductController::class, 'update'])->name('product.update');
@@ -54,10 +56,13 @@ Route::middleware(['token_check', 'user'])->group(function () {
     Route::get("user/cart", [UserController::class, 'getCartInfo'])->name('user.cart');
     Route::get("user/totalSale", [UserController::class, 'totalSales'])->name('user.totalSales');
     Route::get("user/orders", [UserController::class, 'getOrders'])->name('user.orders');
+    
     Route::get("cart/user/", [CartController::class, 'cartByUser'])->name('cart.user');
-    Route::get("order/user/", [OrderController::class, 'orderByUser'])->name('order.user');
-    Route::put("order", [OrderController::class, 'update'])->name('order.update');
+    Route::put("cart", [CartController::class, 'update'])->name('cart.update');
+    Route::delete("cart", [CartController::class, 'destroy'])->name('cart.destory');
+
     Route::post("order", [OrderController::class, 'store'])->name('order.create');
+
     Route::resource('shipping', ShippingController::class)->except(['create', 'edit', 'index']);
 });
 
@@ -65,24 +70,15 @@ Route::middleware(['token_check', 'user'])->group(function () {
 Route::middleware('token_check')->group(function () {
     Route::post("user/login", [UserController::class, 'login'])->name('user.login');
     Route::post("admin/login", [AdminController::class, 'login'])->name('admin.login');
-    
-    Route::post("cart", [CartController::class, 'store'])->name('cart.create');
-    Route::get("cart", [CartController::class, 'show'])->name('cart.get');
-    Route::put("cart", [CartController::class, 'update'])->name('cart.update');
-    Route::delete("cart", [CartController::class, 'destroy'])->name('cart.destory');
-
     Route::post("user/", [UserController::class, 'store'])->name('user.create');
-
     Route::get("product/featured", [ProductController::class, 'featured'])->name('product.featured');
     Route::get("product/available", [ProductController::class, 'available'])->name('product.avaliable');
     Route::get("product/{productId}", [ProductController::class, 'show'])->name('product.show');
     Route::get("product/search/{search}", [ProductController::class, 'search'])->name('product.search');
 
+    Route::get("cart/session", [CartController::class, 'cartBySession'])->name('cart.session');
+    Route::post("cart", [CartController::class, 'store'])->name('cart.create');
 });
-
-
-
-
 
 
 

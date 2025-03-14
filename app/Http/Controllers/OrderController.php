@@ -44,18 +44,18 @@ class OrderController extends Controller
         $request->validate([
             //Comes from Strip API and starts with pi_**********
             'stripe_payment_intent_id' => 'required|string|min:20',
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'phone' => 'required|integer|min:10',
-            'address' => 'required|string|max:255',
-            'zip' => 'required|string|max:255',
-            'city' => 'required|string|max:255',
-            'state' => 'required|string|max:255',
+            'shipping_name' => 'required|string|max:255',
+            'shipping_email' => 'required|email|max:255',
+            'shipping_phone' => 'required|integer|min:10',
+            'shipping_address' => 'required|string|max:255',
+            'shipping_zip' => 'required|string|max:255',
+            'shipping_city' => 'required|string|max:255',
+            'shipping_state' => 'required|string|max:255',
         ]);
 
         $order = Order::createOrder($request);
 
-        return response()->json($order, 201);
+        return response()->json($order, 200);
     }
 
     /**

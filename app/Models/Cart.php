@@ -15,20 +15,12 @@ class Cart extends Model
     use HasFactory;
 
     protected $fillable = [
-        'product_id', 'session_id', 'quantity', 'user_id'
+        'product_id', 'session_id', 'quantity', 'user_id', 'price'
     ];
 
-    public static function userCart(int $userId){
+    public static function userCart(int $userId)
+    {
         $user = User::with('carts.product')->find($userId);
-        
-        foreach ($user->carts as $cart) {
-            $cart->product['category'] = Category::find($cart->product['category_id']);
-            $cart->product->category->makeHidden('updated_at', 'created_at');
-            $cart->product->makeHidden('short_description', 'long_description','created_at','updated_at','category_id');
-            $cart->makeHidden('product_id', "user_id",'created_at','updated_at');
-        }
-        
-        $user->makeHidden('password','email_verified_at','remember_token','created_at','updated_at');
         return $user->carts;
     }
 
@@ -42,11 +34,11 @@ class Cart extends Model
 
     //-----relationships------
 
-    public function user(){
+    public function user(): BelongsTo{
         return $this->belongsTo(User::class);
     }
 
-    public function product(){
+    public function product(): BelongsTo{
         return $this->belongsTo(Product::class);
     }
 }

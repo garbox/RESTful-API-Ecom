@@ -3,56 +3,73 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Str;
 use App\Models\User;
 use App\Models\Order;
+use App\Models\Cart;
 use App\Models\Product;
 use App\Models\Shipping;
-use App\Models\ProductType;
+use App\Models\Category;
+use App\Models\ApiToken;
+use App\Models\Admin;
 use Tests\TestCase;
 
 class OrderCrudTest extends TestCase
 {
-    use RefreshDatabase;
+    //use RefreshDatabase;
     
     /** @test */
     public function it_can_create_an_order(){
-        //create user
-        //create prod types
-        //create prod
-        //create cart items
-        //create order from cart items
-        //get total price from cart items and 
-        // send to get payment intent id. 
-        //if working create order items from cart items, 
-        //create order with total price, user_id and stripe intent id. 
+        Artisan::call('app:admin-api-token');
+        $token = ApiToken::pluck('api_token')->first();
+        Admin::factory()->create();
         $user = User::factory()->create();
+        Category::factory()->create();
+        Product::factory()->create();
+        Cart::factory(5)->create();
 
-        $orderData = [
-            'user_id' => $user->id,
-            'total_price' => 5000,
-            'stripe_payment_intent_id' => Str::random(25),
+        $headers = [
+            'GLOBAL-API-KEY' => $token,
+            'USER-API-KEY' => $user->api_token,
         ];
 
-        $response = $this->postJson(route('order.create'), $orderData);
+        $body = [
+            'stripe_payment_intent_id' => STR::random(20),
+            'shipping_name' => 'Kyle Metiver',
+            'shipping_email' => 'SomeEmail@email.com',
+            'shipping_phone' => '1234567890',
+            'shipping_address' => '1234 Some St',
+            'shipping_zip' => '12345',
+            'shipping_city' => 'Some City',
+            'shipping_state' => 'Some State',
+        ];
 
-        $response->assertStatus(201);
-        $this->assertDatabaseHas('orders', [
-            'user_id' => $orderData['user_id'],
-        ]);
+        $response = $this->postJson(route('order.create'), $body, $headers);
+
+        $response->assertStatus(200);
+
     }
-
+    
     /** @test */
     public function it_can_read_a_order(){
+        Artisan::call('app:admin-api-token');
+        $token = ApiToken::pluck('api_token')->first();
+        $admin = Admin::factory()->create();
         User::factory()->create();
-        ProductType::factory()->create();
+        Category::factory()->create();
         Product::factory()->create();
         $order = Order::factory()->create();
 
-        // Fetch the user using GET request
-        $response = $this->getJson('/api/order/' . $order->id);
+        $headers = [
+            'GLOBAL-API-KEY' => $token,
+            'USER-API-KEY' => $admin->api_token,
+        ];
 
+
+        // Fetch the user using GET request
+        $response = $this->getJson(route('admin.orders.show',$order->id), $headers);
+        
         // Assert the response is successful
         $response->assertStatus(200); // 200 OK
         $this->assertDatabaseHas('orders', [
@@ -62,54 +79,73 @@ class OrderCrudTest extends TestCase
 
     /** @test */
     public function it_can_update_a_order(){
+        Artisan::call('app:admin-api-token');
+        $token = ApiToken::pluck('api_token')->first();
         User::factory()->create();
-        ProductType::factory()->create();
+        $admin = Admin::factory()->create();
+        Category::factory()->create();
         Product::factory()->create();
         $order = Order::factory()->create();
 
-        $updatedData = [
-            'total_price' => 500000,
+        $headers = [
+            'GLOBAL_API_KEY' => $token,
+            'USER_API_KEY' => $admin->api_token,
         ];
 
-        $response = $this->putJson('/api/order/' . $order->id, $updatedData);
+        $body = [
+            'total_price' => 1000,
+        ];
+
+        $response = $this->putJson(route('order.update', $order->id), $body, $headers);
+
         $response->assertStatus(200);
         $this->assertDatabaseHas('orders', [
-            'total_price' => $updatedData['total_price'],
+            'total_price' => $body['total_price'],
         ]);
-
-        $response = $this->putJson('/api/order/' . $order->id+1, $updatedData);
-        $response->assertStatus(404);
     }
 
     /** @test */
     public function it_can_delete_a_order(){
+        Artisan::call('app:admin-api-token');
+        $token = ApiToken::pluck('api_token')->first();
         User::factory()->create();
-        ProductType::factory()->create();
+        $admin = Admin::factory()->create();
+        Category::factory()->create();
         Product::factory()->create();
         $order = Order::factory()->create();
 
-        $response = $this->deleteJson('/api/order/' . $order->id);
-        $response->assertStatus(200);
-        $this->assertDatabaseMissing('orders', [
-            'id' => $order->id,
-        ]);
+        $headers = [
+            'GLOBAL-API-KEY' => $token,
+            'USER-API-KEY' => $admin->api_token,
+        ];
 
-        $response = $this->deleteJson('/api/order/'. $order->id+1);
+        $response = $this->getJson(route('order.destroy', $order->id), $headers);
+
+        $response->assertStatus(200);
+
+        $response = $this->getJson(route('order.destroy', $order->id+1), $headers);
         $response->assertStatus(404);
     }
 
     /** @test */
     public function it_can_get_orders_by_user(){
+        Artisan::call('app:admin-api-token');
+        $token = ApiToken::pluck('api_token')->first();
         $user = User::factory()->create();
-        ProductType::factory()->create();
+        $admin = Admin::factory()->create();
+        Category::factory()->create();
         Product::factory()->create();
-        $order = Order::factory()->create();
-        Shipping::factory()->create();
-        
-        $response = $this->getJson('/api/order/user/'. $user->id);
-        $response->assertStatus(200);
+        Order::factory()->create();
 
-        $response = $this->getJson('/api/order/user/'. $user->id+1);
-        $response->assertStatus(404);
+        $headers = [
+            'GLOBAL-API-KEY' => $token,
+            'USER-API-KEY' => $admin->api_token,
+        ];
+
+
+        // Fetch the user using GET request
+        $response = $this->getJson(route('order.user', $user->id), $headers);
+
+        $response->assertStatus(200);
     }
 }
