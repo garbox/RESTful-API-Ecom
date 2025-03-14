@@ -85,7 +85,7 @@ class CartCrudTest extends TestCase
             'USER_API_KEY' => $admin->api_token,
         ];
 
-        $response = $this->getJson(route('cart.get'), $cart->id, $headers);
+        $response = $this->getJson(route('cart.get', $cart->id), $headers);
         $response->assertStatus(200);
     }
 
@@ -115,7 +115,6 @@ class CartCrudTest extends TestCase
             'session_id' =>  $cartData['session_id'],   
         ]);
     }
-
     /** @test */
     public function it_can_create_an_cart_with_user_api_token(){
         Artisan::call('app:admin-api-token');
