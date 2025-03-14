@@ -51,7 +51,7 @@ Route::middleware(['token_check', 'admin'])->group(function () {
 Route::middleware(['token_check', 'user'])->group(function () {
     Route::get("user/", [UserController::class, 'show'])->name('user.get');
     Route::put("user/", [UserController::class, 'update'])->name('user.update');
-    Route::delete("user/", [UserController::class, 'destroy'])->name('user.destory');
+    Route::delete("user/", [UserController::class, 'destroy'])->name('user.destroy');
     Route::get("user/shipping", [UserController::class, 'getShippingInfo'])->name('user.shipping');
     Route::get("user/cart", [UserController::class, 'getCartInfo'])->name('user.cart');
     Route::get("user/totalSale", [UserController::class, 'totalSales'])->name('user.totalSales');
