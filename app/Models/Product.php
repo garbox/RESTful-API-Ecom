@@ -5,7 +5,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\OrderItem;
 use App\Models\Cart;
@@ -16,7 +15,7 @@ class Product extends Model
     use HasFactory;
     
     protected $fillable = [
-        'name', 'price', 'short_description', 'long_description', 'product_type_id', 'available', 'featured'
+        'name', 'price', 'short_description', 'long_description', 'category_id', 'available', 'featured'
     ];
 
     public static function available(){
@@ -30,6 +29,10 @@ class Product extends Model
         ->where('available', 1);
     }
 
+    public static function price(int $id){
+        return Product::find($id)->pluck('price')->first();
+    }
+    
     //------relationships---------
     public function category(): BelongsTo{
         return $this->belongsTo(Category::class);
