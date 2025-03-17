@@ -3,11 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\JsonForm;
 
-Route::middleware(['token_check'])->group(function () {
-    Route::get('/', function () {
-        return ['Laravel' => app()->version()];
-    });
-});
+Route::redirect('/', '/docs/api');
 
 Route::get('/json', [JsonForm::class , 'index']);
 
