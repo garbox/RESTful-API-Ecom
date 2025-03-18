@@ -29,11 +29,14 @@ return [
         /*
          * Description rendered on the home page of the API documentation (`/docs/api`).
          */
-        'description' => '<p>This is a Ecommerce API documentation that allows for decuppled front-end and back-end development.
-        <br>It is built with Laravel Casheir(Stipe), and Scrammble API documentation.
-        <br>This application requires an API key to access the API. The API key is passed in the header of the request as a key-value pair.</p>
-        <p>There are two types of API keys: <strong>GLOBAL_API_KEY</strong> and <strong>USER_API_KEY
-        </strong>.<br> The <strong>GLOBAL_API_KEY</strong> is the main gatekeeper to access the main application as well as tracking what applications are being used. <br>The <strong>USER_API_KEY</strong> is used to access the either Admin or User access of application.</p>'
+        'description' => '<p>This API facilitates decoupled front-end and back-end development, enabling seamless integration with various client applications.</p>
+        <p>Built with <b>Laravel Cashier (Stripe)</b> and <b>Scramble API</b> documentation, this application ensures secure and efficient payment processing while providing well-structured API documentation.</p>
+        <h3>Authentication & API Keys</h3>
+        <p>Access to this API requires an API key, which must be included in the request headers as a key-value pair.</p>
+        <p>There are two types of API keys:</p>
+        <li><b>GLOBAL_API_KEY</b> – Serves as the primary access key for the application, managing authentication and tracking API usage across different client applications.</li>
+        <li><b>USER_API_KEY</b> – Grants access to specific user roles within the application, such as Admin or User, ensuring appropriate authorization for different functionalities.</li>
+        <p>For further details on authentication, request structure, and endpoint usage, please refer to the complete API documentation.</p>'
     ],
 
     /*
@@ -43,7 +46,7 @@ return [
         /*
          * Define the title of the documentation's website. App name is used when this config is `null`.
          */
-        'title' => null,
+        'title' => 'E-Commerce API Documentation',
 
         /*
          * Define the theme of the documentation. Available options are `light` and `dark`.
