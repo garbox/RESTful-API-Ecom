@@ -29,7 +29,7 @@ return [
         /*
          * Description rendered on the home page of the API documentation (`/docs/api`).
          */
-        'description' => '<p>This API facilitates decoupled front-end and back-end development, enabling seamless integration with various client applications.</p>
+        'description' => '<h3>E-Commerce API Documentation</h3><p>This API facilitates decoupled front-end and back-end development, enabling seamless integration with various client applications.</p>
         <p>Built with <b>Laravel Cashier (Stripe)</b> and <b>Scramble API</b> documentation, this application ensures secure and efficient payment processing while providing well-structured API documentation.</p>
         <h3>Authentication & API Keys</h3>
         <p>Access to this API requires an API key, which must be included in the request headers as a key-value pair.</p>
@@ -46,7 +46,7 @@ return [
         /*
          * Define the title of the documentation's website. App name is used when this config is `null`.
          */
-        'title' => 'E-Commerce API Documentation',
+        'title' => null,
 
         /*
          * Define the theme of the documentation. Available options are `light` and `dark`.
