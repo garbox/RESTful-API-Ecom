@@ -65,6 +65,8 @@ class CartController extends Controller
      * @response Cart[]
      */ 
     #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
+    #[HeaderParameter('USER_API_KEY', description: 'User API Token', type: 'string|nullable')]
+    #[HeaderParameter('session_id', description: 'Session Token provided when a new cart item is placed and no session id is given.', type: 'string|nullable')]
     public function show(Request $request, int $cartId){
         $query = Cart::with('product.category');
     
@@ -89,6 +91,7 @@ class CartController extends Controller
      * @response Cart
      */ 
     #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
+    #[HeaderParameter('USER_API_KEY', description: 'User API Token', type: 'string|nullable')]
     public function update(Request $request){
         $cart = Cart::find($request->cart_id);
 
@@ -115,6 +118,7 @@ class CartController extends Controller
      * @response Cart
      */ 
     #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
+    #[HeaderParameter('USER_API_KEY', description: 'User API Token', type: 'string|nullable')]
     public function destroy(Request $request){
         $cart = Cart::find($request->cart_id);
 
@@ -135,7 +139,7 @@ class CartController extends Controller
      * @response Cart
      */ 
     #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
-    #[HeaderParameter('session_id', description: 'Main Application API Token', type: 'string')]
+    #[HeaderParameter('session_id', description: 'Session Token provided when a new cart item is placed and no session id is given.', type: 'string')]
     public function cartBySession(Request $request){
         $cart = Cart::sessionCart($request->header('session_id'));
 

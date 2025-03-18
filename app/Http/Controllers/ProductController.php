@@ -15,9 +15,7 @@ class ProductController extends Controller
      *
      */ 
     #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
-    #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
-    public function index()
-    {
+    public function index(){
         $products = Product::with('category', 'photos')->get();
     
         if ($products->isEmpty()) {
@@ -76,6 +74,7 @@ class ProductController extends Controller
      * @response Product
      */ 
     #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
+    #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
     public function update(Request $request, int $productId){
         $product = Product::find($productId);
 
@@ -108,6 +107,7 @@ class ProductController extends Controller
      * 
      */ 
     #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
+    #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
     public function destroy(int $productId){
         $product = Product::find($productId);
 

@@ -41,7 +41,6 @@ class UserController extends Controller
      * @response User
      */ 
     #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
-    #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
     public function store(Request $request){
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
@@ -67,7 +66,7 @@ class UserController extends Controller
      * @response User
      */ 
     #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
-    #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
+    #[HeaderParameter('USER_API_KEY', description: 'User API Token', type: 'string')]
     public function show(Request $request){
         return new UserResource($request->authed_user);
     }
@@ -78,7 +77,7 @@ class UserController extends Controller
      * @response User
      */ 
     #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
-    #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
+    #[HeaderParameter('USER_API_KEY', description: 'User API Token', type: 'string')]
     public function update(Request $request){
         $user = User::find($request->authed_user->id);
 
@@ -101,7 +100,7 @@ class UserController extends Controller
      * 
      */ 
     #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
-    #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
+    #[HeaderParameter('USER_API_KEY', description: 'User API Token', type: 'string')]
     public function destroy(Request $request){
         $user = User::find($request->authed_user->id);
 
@@ -119,7 +118,7 @@ class UserController extends Controller
      * 
      */ 
     #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
-    #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
+    #[HeaderParameter('USER_API_KEY', description: 'User API Token', type: 'string')]
     public function getOrders(Request $request){
         $user = User::with('orders.shipping')->find($request->authed_user->id);
 
@@ -143,7 +142,7 @@ class UserController extends Controller
      * 
      */ 
     #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
-    #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
+    #[HeaderParameter('USER_API_KEY', description: 'User API Token', type: 'string')]
     public function getShippingInfo(Request $request){
         $user = User::with('shipping')->find($request->authed_user->id);
 
@@ -167,7 +166,7 @@ class UserController extends Controller
      * 
      */ 
     #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
-    #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
+    #[HeaderParameter('USER_API_KEY', description: 'User API Token', type: 'string')]
     public function getCartInfo(Request $request){
         $user = User::with('carts.product')->find($request->authed_user->id);
 
@@ -187,7 +186,7 @@ class UserController extends Controller
      * 
      */ 
     #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
-    #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
+    #[HeaderParameter('USER_API_KEY', description: 'User API Token', type: 'string')]
     public function totalSales(Request $request){
         $user = User::find($request->authed_user->id);
 
@@ -208,7 +207,7 @@ class UserController extends Controller
      * @response User
      */ 
     #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
-    #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
+    #[HeaderParameter('USER_API_KEY', description: 'User API Token', type: 'string')]
     public function login(LoginRequest $request){
         $credentials = $request->only('email', 'password');
 

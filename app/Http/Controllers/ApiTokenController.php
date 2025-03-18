@@ -32,8 +32,6 @@ class ApiTokenController extends Controller
      */ 
     #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
     #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
-    #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
-    #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
     public function store(Request $request){
         $validatedData = $request->validate([
             'app_name' => 'required|string|max:255',
