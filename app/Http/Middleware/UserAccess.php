@@ -20,7 +20,7 @@ class UserAccess
    #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
     public function handle(Request $request, Closure $next): Response
     {
-        $apiToken = $request->header('USER_API_KEY');
+        $apiToken = $request->header('user-api-key');
 
         if (!$apiToken) {
             return response()->json(['message' => 'User API token is required'], 400);

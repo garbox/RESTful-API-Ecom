@@ -13,7 +13,7 @@ class AdminAccess
 {
     public function handle(Request $request, Closure $next): Response
     {
-        $apiToken = $request->header('USER_API_KEY');
+        $apiToken = $request->header('user-api-key');
 
         if (!$apiToken) {
             return response()->json(['message' => 'Admin API token is required'], 400);
