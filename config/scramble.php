@@ -30,9 +30,9 @@ return [
          * Description rendered on the home page of the API documentation (`/docs/api`).
          */
         'description' => '<h3> Tokens for testing </h3>
-        <p><b>global-api-key:</b> {{App\Models\ApiToken::first()}}</p>
-        <p><b>ADMIN: user-api-key:</b> {{App\Models\Admin::first()}}</p>
-        <p><b>USER user-api-key:</b> {{App\Models\User::first()}}</p>
+        <p><b>global-api-key:</b> ' . App\Models\ApiToken::first(). '</p>
+        <p><b>ADMIN: user-api-key:</b> '. App\Models\Admin::first(). '</p>
+        <p><b>USER user-api-key:</b> '. App\Models\User::first(). '</p>
         <h3>E-Commerce API Documentation</h3><p>This API facilitates decoupled back-end development, enabling seamless integration with various client applications.</p>
         <p>Built with <b>Laravel Cashier (Stripe)</b> and <b>Scramble API</b> documentation, this application ensures secure and efficient payment processing while providing well-structured API documentation.</p>
         <h3>Authentication & API Keys</h3>
