@@ -35,8 +35,8 @@ class AdminController extends Controller
      * Create an admin user
      * @response Admin[]
      */
-    #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
-    #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
+    #[HeaderParameter('global-api-key', description: 'Main Application API Token', type: 'string')]
+    #[HeaderParameter('user-api-key', description: 'Admin API Token', type: 'string')]
     public function store(Request $request){
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
@@ -57,8 +57,8 @@ class AdminController extends Controller
      * Get an single admin user
      * @response Admin[]
      */
-    #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
-    #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
+    #[HeaderParameter('global-api-key', description: 'Main Application API Token', type: 'string')]
+    #[HeaderParameter('user-api-key', description: 'Admin API Token', type: 'string')]
     public function show(Request $request){
         $admin = Admin::find($request->authed_user->id);
 
@@ -73,8 +73,8 @@ class AdminController extends Controller
      * Update an admin user
      * @response Admin[]
      */ 
-    #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
-    #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
+    #[HeaderParameter('global-api-key', description: 'Main Application API Token', type: 'string')]
+    #[HeaderParameter('user-api-key', description: 'Admin API Token', type: 'string')]
     public function update(Request $request){
         $admin = Admin::find($request->authed_user->id);
     
@@ -95,8 +95,8 @@ class AdminController extends Controller
     /**
      * Delete an admin user
      */
-    #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
-    #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
+    #[HeaderParameter('global-api-key', description: 'Main Application API Token', type: 'string')]
+    #[HeaderParameter('user-api-key', description: 'Admin API Token', type: 'string')]
     public function destroy(Request $request){
         $admin = Admin::find($request->authed_user->id);
     
@@ -113,7 +113,7 @@ class AdminController extends Controller
      * Admin login.
      * @response Admin
      */
-    #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
+    #[HeaderParameter('global-api-key', description: 'Main Application API Token', type: 'string')]
     public function login(LoginRequest $request){
         $credentials = $request->validate([
             'email' => 'required|email',

@@ -14,8 +14,8 @@ class CategoryController extends Controller
      * 
      * @response Category[]
      */ 
-    #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
-    #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
+    #[HeaderParameter('global-api-key', description: 'Main Application API Token', type: 'string')]
+    #[HeaderParameter('user-api-key', description: 'Admin API Token', type: 'string')]
     public function index(){
         $categories = Category::all();
 
@@ -34,8 +34,8 @@ class CategoryController extends Controller
      * 
      * @response Category
      */ 
-    #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
-    #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
+    #[HeaderParameter('global-api-key', description: 'Main Application API Token', type: 'string')]
+    #[HeaderParameter('user-api-key', description: 'Admin API Token', type: 'string')]
     public function store(Request $request){
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
@@ -51,8 +51,8 @@ class CategoryController extends Controller
      * 
      * @response Category
      */ 
-    #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
-    #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
+    #[HeaderParameter('global-api-key', description: 'Main Application API Token', type: 'string')]
+    #[HeaderParameter('user-api-key', description: 'Admin API Token', type: 'string')]
     public function show(int $categoryId){
         $category = Category::find($categoryId);
 
@@ -71,8 +71,8 @@ class CategoryController extends Controller
      * 
      * @response Category
      */ 
-    #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
-    #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
+    #[HeaderParameter('global-api-key', description: 'Main Application API Token', type: 'string')]
+    #[HeaderParameter('user-api-key', description: 'Admin API Token', type: 'string')]
     public function update(Request $request, int $categoryId){
         $category = Category::find($categoryId);
 
@@ -94,8 +94,8 @@ class CategoryController extends Controller
      * 
      *
      */ 
-    #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
-    #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
+    #[HeaderParameter('global-api-key', description: 'Main Application API Token', type: 'string')]
+    #[HeaderParameter('user-api-key', description: 'Admin API Token', type: 'string')]
     public function destroy(int $categoryId){
         $category = Category::find($categoryId);
     
@@ -113,7 +113,7 @@ class CategoryController extends Controller
      * 
      * @response Product[]
      */ 
-    #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
+    #[HeaderParameter('global-api-key', description: 'Main Application API Token', type: 'string')]
     public function products(int $categoryId){
         $category = Category::find($categoryId);
 

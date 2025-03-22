@@ -14,8 +14,8 @@ class PhotoController extends Controller
      * @response Photo[]
      * 
      */ 
-   #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
-   #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
+   #[HeaderParameter('global-api-key', description: 'Main Application API Token', type: 'string')]
+   #[HeaderParameter('user-api-key', description: 'Admin API Token', type: 'string')]
     public function index(){
         $photos = Photo::all();
     
@@ -35,8 +35,8 @@ class PhotoController extends Controller
      * @response Photo[]
      * 
      */ 
-   #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
-   #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
+   #[HeaderParameter('global-api-key', description: 'Main Application API Token', type: 'string')]
+   #[HeaderParameter('user-api-key', description: 'Admin API Token', type: 'string')]
     public function store(Request $request){
         $validatedData = $request->validate([
             'product_id' => 'required|integer|exists:products,id',
@@ -63,7 +63,7 @@ class PhotoController extends Controller
      * @response Photo
      * 
      */ 
-   #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
+   #[HeaderParameter('global-api-key', description: 'Main Application API Token', type: 'string')]
     public function show(int $photoId){
         $photo = Photo::find($photoId);
 
@@ -82,8 +82,8 @@ class PhotoController extends Controller
      * @response Photo
      * 
      */ 
-    #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
-    #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
+    #[HeaderParameter('global-api-key', description: 'Main Application API Token', type: 'string')]
+    #[HeaderParameter('user-api-key', description: 'Admin API Token', type: 'string')]
     public function destroy(int $photoId){
         $photo = Photo::find($photoId);
     

@@ -15,8 +15,8 @@ class OrderController extends Controller
      * 
      *  @response Order[]
      */ 
-    #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
-    #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
+    #[HeaderParameter('global-api-key', description: 'Main Application API Token', type: 'string')]
+    #[HeaderParameter('user-api-key', description: 'Admin API Token', type: 'string')]
     public function index(){
         $orders = Order::with('user.shipping')->get();
 
@@ -37,8 +37,8 @@ class OrderController extends Controller
      * 
      * @response Order[]
      */ 
-    #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
-    #[HeaderParameter('USER_API_KEY', description: 'User API Token', type: 'string')]
+    #[HeaderParameter('global-api-key', description: 'Main Application API Token', type: 'string')]
+    #[HeaderParameter('user-api-key', description: 'User API Token', type: 'string')]
     public function store(Request $request){
 
         $request->validate([
@@ -63,8 +63,8 @@ class OrderController extends Controller
      * 
      * @response Order
      */ 
-    #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
-    #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
+    #[HeaderParameter('global-api-key', description: 'Main Application API Token', type: 'string')]
+    #[HeaderParameter('user-api-key', description: 'Admin API Token', type: 'string')]
     public function show(int $orderId){
         $order = Order::find($orderId);
 
@@ -80,8 +80,8 @@ class OrderController extends Controller
      * 
      * @response Order
      */ 
-    #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
-    #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
+    #[HeaderParameter('global-api-key', description: 'Main Application API Token', type: 'string')]
+    #[HeaderParameter('user-api-key', description: 'Admin API Token', type: 'string')]
     public function update(Request $request, int $orderId){
         $order = Order::find($orderId);
 
@@ -103,8 +103,8 @@ class OrderController extends Controller
      * 
      *
      */ 
-    #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
-    #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
+    #[HeaderParameter('global-api-key', description: 'Main Application API Token', type: 'string')]
+    #[HeaderParameter('user-api-key', description: 'Admin API Token', type: 'string')]
     public function destroy(int $orderId){
         $order = Order::find($orderId);
     
@@ -122,10 +122,10 @@ class OrderController extends Controller
      * 
      * 
      */ 
-    #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
-    #[HeaderParameter('USER_API_KEY', description: 'User API Token', type: 'string')]
+    #[HeaderParameter('global-api-key', description: 'Main Application API Token', type: 'string')]
+    #[HeaderParameter('user-api-key', description: 'User API Token', type: 'string')]
     public function orderByUser(Request $request, ?int $user_id = null){
-        $user = User::where('api_token', $request->header('USER_API_KEY'))
+        $user = User::where('api_token', $request->header('user-api-key'))
             ->orWhere('id', $user_id)
             ->first();
             

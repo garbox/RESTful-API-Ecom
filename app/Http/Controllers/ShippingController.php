@@ -13,8 +13,8 @@ class ShippingController extends Controller
      * 
      * @response Shipping[]
      */ 
-    #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
-    #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
+    #[HeaderParameter('global-api-key', description: 'Main Application API Token', type: 'string')]
+    #[HeaderParameter('user-api-key', description: 'Admin API Token', type: 'string')]
     public function index(){
         $shipping = Shipping::all();
         if($shipping->isEmpty()){
@@ -30,8 +30,8 @@ class ShippingController extends Controller
      * 
      * @response Shipping
      */ 
-    #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
-    #[HeaderParameter('USER_API_KEY', description: 'User API Token', type: 'string')]
+    #[HeaderParameter('global-api-key', description: 'Main Application API Token', type: 'string')]
+    #[HeaderParameter('user-api-key', description: 'User API Token', type: 'string')]
     public function store(Request $request){
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
@@ -55,8 +55,8 @@ class ShippingController extends Controller
      * 
      * @response Shipping
      */ 
-    #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
-    #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
+    #[HeaderParameter('global-api-key', description: 'Main Application API Token', type: 'string')]
+    #[HeaderParameter('user-api-key', description: 'Admin API Token', type: 'string')]
     public function show(int $shippingId){
         $shipping = Shipping::find($shippingId);
 
@@ -75,8 +75,8 @@ class ShippingController extends Controller
      * 
      * @response Shipping
      */ 
-    #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
-    #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
+    #[HeaderParameter('global-api-key', description: 'Main Application API Token', type: 'string')]
+    #[HeaderParameter('user-api-key', description: 'Admin API Token', type: 'string')]
     public function update(Request $request, int $shippingId){
         $shipping = Shipping::find($shippingId);
 
@@ -108,8 +108,8 @@ class ShippingController extends Controller
      * 
      * @response Shipping
      */ 
-    #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
-    #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
+    #[HeaderParameter('global-api-key', description: 'Main Application API Token', type: 'string')]
+    #[HeaderParameter('user-api-key', description: 'Admin API Token', type: 'string')]
     public function destroy(int $shippingId){
         $shipping = Shipping::find($shippingId);
 

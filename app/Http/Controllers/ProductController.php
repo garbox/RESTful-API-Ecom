@@ -14,7 +14,7 @@ class ProductController extends Controller
      * 
      *
      */ 
-    #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
+    #[HeaderParameter('global-api-key', description: 'Main Application API Token', type: 'string')]
     public function index(){
         $products = Product::with('category', 'photos')->get();
     
@@ -33,8 +33,8 @@ class ProductController extends Controller
      * 
      * @response Product
      */ 
-    #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
-    #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
+    #[HeaderParameter('global-api-key', description: 'Main Application API Token', type: 'string')]
+    #[HeaderParameter('user-api-key', description: 'Admin API Token', type: 'string')]
     public function store(Request $request){
 
         $validatedData = $request->validate([
@@ -57,7 +57,7 @@ class ProductController extends Controller
      * 
      * 
      */ 
-    #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
+    #[HeaderParameter('global-api-key', description: 'Main Application API Token', type: 'string')]
     public function show(int $productId){
         $product = Product::with('category','photos')->find($productId);
 
@@ -73,8 +73,8 @@ class ProductController extends Controller
      * 
      * @response Product
      */ 
-    #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
-    #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
+    #[HeaderParameter('global-api-key', description: 'Main Application API Token', type: 'string')]
+    #[HeaderParameter('user-api-key', description: 'Admin API Token', type: 'string')]
     public function update(Request $request, int $productId){
         $product = Product::find($productId);
 
@@ -106,8 +106,8 @@ class ProductController extends Controller
      * 
      * 
      */ 
-    #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
-    #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
+    #[HeaderParameter('global-api-key', description: 'Main Application API Token', type: 'string')]
+    #[HeaderParameter('user-api-key', description: 'Admin API Token', type: 'string')]
     public function destroy(int $productId){
         $product = Product::find($productId);
 
@@ -127,7 +127,7 @@ class ProductController extends Controller
      * Show all featured products
      * 
      */ 
-    #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
+    #[HeaderParameter('global-api-key', description: 'Main Application API Token', type: 'string')]
     public function featured(){
         $products = Product::featured()->with('category', 'photos')->get();
 
@@ -145,7 +145,7 @@ class ProductController extends Controller
      * 
      *
      */ 
-    #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
+    #[HeaderParameter('global-api-key', description: 'Main Application API Token', type: 'string')]
     public function available(){
         $products = Product::available()->with('category', 'photos')->get();
 
@@ -163,7 +163,7 @@ class ProductController extends Controller
      * 
      * 
      */ 
-    #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
+    #[HeaderParameter('global-api-key', description: 'Main Application API Token', type: 'string')]
     public function search(string $search){
         $result = Product::where('name','LIKE','%'.$search.'%')->with('category', 'photos')
         ->get();
