@@ -19,8 +19,8 @@ class AdminController extends Controller
      * @response Admin[]
      * 
      */ 
-   #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
-   #[HeaderParameter('USER_API_KEY', description: 'Admin API Token', type: 'string')]
+   #[HeaderParameter('global-api-key', description: 'Main Application API Token', type: 'string')]
+   #[HeaderParameter('user_api_key', description: 'Admin API Token', type: 'string')]
     public function index(){
         $admins = Admin::all();
 

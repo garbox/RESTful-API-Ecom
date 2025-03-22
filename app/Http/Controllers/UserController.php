@@ -9,7 +9,6 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Dedoc\Scramble\Attributes\HeaderParameter;
 use App\Models\User;
-use App\Models\Cart;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\CartResource;
 use App\Http\Resources\ShippingResource;
@@ -74,13 +73,13 @@ class UserController extends Controller
     /**
      * Update a user
      * 
-     * @response User
+     *
      */ 
     #[HeaderParameter('GLOBAL_API_KEY', description: 'Main Application API Token', type: 'string')]
     #[HeaderParameter('USER_API_KEY', description: 'User API Token', type: 'string')]
     public function update(Request $request){
         $user = User::find($request->authed_user->id);
-
+        
         $validatedData = $request->validate([
             'name' => 'nullable|string|max:255',
             'email' => 'nullable|email|unique:users,email,' . $request->authed_user->id,
@@ -90,7 +89,11 @@ class UserController extends Controller
             'zip' => 'nullable|string',
         ]);
 
-        $user->update(array_filter($validatedData));
+        if (empty($validatedData)) {
+            return response()->json(['message' => 'No valid data provided'], 400);
+        }
+        
+        $user->updateOrFail(array_filter($validatedData));
 
         return new UserResource($user);
     }

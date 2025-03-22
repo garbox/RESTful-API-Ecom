@@ -10,7 +10,9 @@ class CheckApiKey
 {
     public function handle(Request $request, Closure $next)
     {
+
         $apiKey = $request->header('GLOBAL_API_KEY');
+        return response()->json($request->headers->all());
 
         if (!$apiKey) {
             return response()->json(['message' => 'Application API key is missing'], 404);
