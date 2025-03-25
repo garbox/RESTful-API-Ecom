@@ -14,16 +14,17 @@ use App\Http\Controllers\ApiTokenController;
 //Admin Routes
 Route::middleware(['token_check', 'admin'])->group(function () {
     Route::get("admin/all", [AdminController::class, 'index'])->name('admin.all');
-    Route::get("admin/", [AdminController::class, 'show'])->name('admin.get');
+    Route::get("admin/{admin_id}", [AdminController::class, 'show'])->name('admin.get');
+    Route::get("admin/current", [AdminController::class, 'currentAdmin'])->name('admin.get.current');
     Route::post("admin/", [AdminController::class, 'store'])->name('admin.create');
-    Route::put("admin/", [AdminController::class, 'update'])->name('admin.update');
-    Route::delete("admin/", [AdminController::class, 'destroy'])->name('admin.destroy');
+    Route::patch("admin/", [AdminController::class, 'update'])->name('admin.update');
+    Route::delete("admin/{admin_id}", [AdminController::class, 'destroy'])->name('admin.destroy');
     
     Route::get("cart/all", [CartController::class, 'index'])->name('cart.all');
-    Route::get("cart/get/{cart_id}", [CartController::class, 'index'])->name('cart.get');
+    Route::get("cart/get/{cart}", [CartController::class, 'index'])->name('cart.get');
     
     Route::resource('category', CategoryController::class)->except(['create', 'edit']);
-    Route::get("category/{categoryId}/products", [CategoryController::class, 'products'])->name('category.products');
+    Route::get("category/{category_id}/products", [CategoryController::class, 'products'])->name('category.products');
 
     Route::get("order/all", [OrderController::class, 'index'])->name('order.all');
     Route::get("order/{order_id}", [OrderController::class, 'show'])->name('admin.orders.show');
@@ -73,7 +74,7 @@ Route::middleware('token_check')->group(function () {
     Route::post("user/", [UserController::class, 'store'])->name('user.create');
     Route::get("product/featured", [ProductController::class, 'featured'])->name('product.featured');
     Route::get("product/available", [ProductController::class, 'available'])->name('product.avaliable');
-    Route::get("product/{productId}", [ProductController::class, 'show'])->name('product.show');
+    Route::get("product/{product_id}", [ProductController::class, 'show'])->name('product.show');
     Route::get("product/search/{search}", [ProductController::class, 'search'])->name('product.search');
 
     Route::get("cart/session", [CartController::class, 'cartBySession'])->name('cart.session');

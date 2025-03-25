@@ -40,7 +40,7 @@ class AdminController extends Controller
     public function store(Request $request){
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:admins,email',
+            'email' => 'required|confirmed|email|unique:admins,email',
             'role_id' => 'required|integer',
             'permissions' => 'required|integer',
             'password' => 'required|string|confirmed|min:8',
@@ -50,17 +50,19 @@ class AdminController extends Controller
         $validatedData['api_token'] = Str::random(34);
         $admin = Admin::create($validatedData);
 
+        // function to send varification email. 
+
         return response()->json(new AdminResource($admin), 201);
     }
 
     /**
-     * Get an single admin user
-     * @response Admin[]
+     * Get an admin user
+     * 
      */
     #[HeaderParameter('global-api-key', description: 'Main Application API Token', type: 'string')]
     #[HeaderParameter('user-api-key', description: 'Admin API Token', type: 'string')]
-    public function show(Request $request){
-        $admin = Admin::find($request->authed_user->id);
+    public function show(int $admin_id){
+        $admin = Admin::find($admin_id);
 
         if (!$admin) {
             return response()->json(['message' => 'Admin user not found.'], 404);
@@ -71,23 +73,19 @@ class AdminController extends Controller
 
     /**
      * Update an admin user
-     * @response Admin[]
+     * 
      */ 
     #[HeaderParameter('global-api-key', description: 'Main Application API Token', type: 'string')]
     #[HeaderParameter('user-api-key', description: 'Admin API Token', type: 'string')]
     public function update(Request $request){
-        $admin = Admin::find($request->authed_user->id);
-    
-        if (!$admin) {
-            return response()->json(['message' => 'Admin user not found.'], 404);
-        }
-    
+        // $request->authed_user->id dosnt allow for documentation to be created due to error. 
+        
         $validatedData = $request->validate([
             'name' => 'nullable|string|max:255',
-            'email' => 'nullable|email|unique:admins,email,' . $admin->id,
-        ]);
+            'email' => 'nullable|email|unique:admins,email,' . $request->authed_user->id,
+        ]); 
     
-        $admin->update(array_filter($validatedData));
+        $admin = Admin::find($request->authed_user->id)->update(array_filter($validatedData));
     
         return response()->json(new AdminResource($admin), 200);
     }
@@ -97,9 +95,9 @@ class AdminController extends Controller
      */
     #[HeaderParameter('global-api-key', description: 'Main Application API Token', type: 'string')]
     #[HeaderParameter('user-api-key', description: 'Admin API Token', type: 'string')]
-    public function destroy(Request $request){
-        $admin = Admin::find($request->authed_user->id);
-    
+    public function destroy(int $adminId){
+        $admin = Admin::find($adminId);
+        
         if (!$admin) {
             return response()->json(['message' => 'Admin user cannot be found.'], 404);
         }
@@ -107,6 +105,21 @@ class AdminController extends Controller
         $admin->delete();
     
         return response()->json(['message' => 'Admin user deleted successfully.'], 200);
+    }
+
+    /**
+     * Get a current admins' info.
+     */
+    #[HeaderParameter('global-api-key', description: 'Main Application API Token', type: 'string')]
+    #[HeaderParameter('user-api-key', description: 'Admin API Token', type: 'string')]
+    public function currentAdmin(Request $request){
+        $admin = Admin::find($request->authed_user->id);
+        
+        if (!$admin) {
+            return response()->json(['message' => 'Admin user not found.'], 404);
+        }
+
+        return response()->json(new AdminResource($admin), 200);
     }
 
     /**
