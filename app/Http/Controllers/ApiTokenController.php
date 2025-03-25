@@ -75,7 +75,7 @@ class ApiTokenController extends Controller
         }
 
         $validatedData = $request->validate([
-            'app_name' => 'nullable|string|max:255',
+            'app_name' => 'required|string|max:255',
         ]);
 
         $token->update(array_filter($validatedData));
